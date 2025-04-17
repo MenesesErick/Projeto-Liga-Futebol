@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Partida>
+
+@{
+    ViewBag.Title = "Partidas";
+}
+
+<h2>Partidas</h2>
+
+<p>
+    @Html.ActionLink("Criar nova partida", "Create")
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().TimeCasa.Nome)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().TimeVisitante.Nome)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().DataHora)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().GolsCasa)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().GolsVisitante)</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.TimeCasa.Nome</td>
+                <td>@item.TimeVisitante.Nome</td>
+                <td>@item.DataHora.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@item.GolsCasa</td>
+                <td>@item.GolsVisitante</td>
+                <td>
+                    @Html.ActionLink("Detalhes", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Excluir", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

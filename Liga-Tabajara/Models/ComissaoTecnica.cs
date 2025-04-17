@@ -1,40 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
+using System;
 
-namespace Liga_Tabajara.Models
+public enum Cargo
 {
-    public class ComissaoTecnica
-    {
-        public enum CargoComissao
-        {
-            Treinador,
-            Auxiliar,
-            PreparadorFisico,
-            Fisiologista,
-            TreinadorDeGoleiros,
-            Fisioterapeuta
-        }
+    Treinador,
+    Auxiliar,
+    PreparadorFisico,
+    Fisiologista,
+    TreinadorGoleiros,
+    Fisioterapeuta
+}
+public class ComissaoTecnica
+{
 
-        [Key]
-        public int ComissaoTecnicaId { get; set; }
+    public int Id { get; set; }
 
-        [Required]
-        [MaxLength(100)]
-        public string Nome { get; set; }
+    [Required]
+    public string Nome { get; set; }
 
-        [Required]
-        public CargoComissao Cargo { get; set; }
+    public Cargo Cargo { get; set; } // Usando enum interno
 
-        [Required]
-        public DateTime DataNascimento { get; set; }
+    [DataType(DataType.Date)]
+    public DateTime DataNascimento { get; set; }
 
-        // Chave estrangeira para o Time
-        [ForeignKey("Time")]
-        public int TimeId { get; set; }
-        public virtual Time Time { get; set; }
-    }
+    // Foreign Key
+    public int TimeId { get; set; }
+    public virtual Time Time { get; set; }
 }

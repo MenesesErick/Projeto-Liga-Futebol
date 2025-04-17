@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Meu Aplicativo ASP.NET</title>
@@ -18,9 +18,14 @@
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
-                    <li>@Html.ActionLink("Página Inicial", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Sobre", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Contato", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Página Inicial", "Index", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Sobre", "About", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Contato", "Contact", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Times", "Index", "Times", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Partidas", "Index", "Partidas", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Jogadores", "Index", "Jogadores", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Gols", "Index", "Gols", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Comissão Técnica", "Index", "ComissaoTecnicas", null, new { @class = "nav-link" })</li>
                 </ul>
             </div>
         </div>

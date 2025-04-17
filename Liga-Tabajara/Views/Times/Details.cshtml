@@ -1,0 +1,120 @@
+﻿@model Time
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Time</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Cidade)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cidade)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estado)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estado)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AnoFundacao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AnoFundacao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Estadio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Estadio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CapacidadeEstadio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CapacidadeEstadio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CorUniformePrincipal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CorUniformePrincipal)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CorUniformeSecundario)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CorUniformeSecundario)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Status)
+        </dd>
+
+    </dl>
+
+    <h4>Jogadores</h4>
+    @if (Model.Jogadores != null && Model.Jogadores.Any())
+    {
+        <ul>
+            @foreach (var jogador in Model.Jogadores)
+            {
+                <li>@jogador.Nome - @jogador.Posicao</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Nenhum jogador cadastrado.</p>
+    }
+
+    <h4>Comissão Técnica</h4>
+    @if (Model.Comissao != null && Model.Comissao.Any())
+    {
+        <ul>
+            @foreach (var membro in Model.Comissao)
+            {
+                <li>@membro.Nome - @membro.Cargo</li>
+            }
+        </ul>
+    }
+    else
+    {
+        <p>Nenhum membro da comissão cadastrado.</p>
+    }
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

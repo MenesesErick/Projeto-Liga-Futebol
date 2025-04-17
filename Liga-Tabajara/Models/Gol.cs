@@ -1,30 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+using System;
 
-namespace Liga_Tabajara.Models
+
+public class Gol
 {
-    public class Gol
-    {
+    public int GolId { get; set; }
+    public int JogadorId { get; set; }
+    public int PartidaId { get; set; }
+    public int Minuto { get; set; }
 
-        [Key]
-        public int GolId { get; set; }
+    public int Quantidade { get; set; }
 
-        // Chave estrangeira para a Partida
-        [ForeignKey("Partida")]
-        public int PartidaId { get; set; }
-        public virtual Partida Partida { get; set; }
-
-        // Chave estrangeira para o Jogador que marcou o gol
-        [ForeignKey("Jogador")]
-        public int JogadorId { get; set; }
-        public virtual Jogador Jogador { get; set; }
-
-        // Opcional: o minuto do gol
-        public int? Minuto { get; set; }
-
-    }
+    public virtual Jogador Jogador { get; set; }
+    public virtual Partida Partida { get; set; }
 }
