@@ -356,12 +356,16 @@
                     new Jogador { Nome = "Rubén Yáñez",            DataNascimento = new DateTime(1993, 6, 22), Nacionalidade = "Espanha",  Posicao = Posicao.Goleiro,  NumeroCamisa = 25, Altura = 1.90m, Peso = 82m, PePreferido = PePreferido.Direito, TimeId = realMadrid.Id },
 
                     // Jogadores Genéricos
-                    new Jogador { Nome = "Jogador Genérico 26",    DataNascimento = new DateTime(1995, 1, 1),  Nacionalidade = "Espanha",  Posicao = Posicao.Meia,    NumeroCamisa = 26, Altura = 1.80m, Peso = 75m, PePreferido = PePreferido.Direito, TimeId = realMadrid.Id },
-                    new Jogador { Nome = "Jogador Genérico 27",    DataNascimento = new DateTime(1995, 2, 1),  Nacionalidade = "Espanha",  Posicao = Posicao.Volante, NumeroCamisa = 27, Altura = 1.82m, Peso = 78m, PePreferido = PePreferido.Direito, TimeId = realMadrid.Id },
-                    new Jogador { Nome = "Jogador Genérico 28",    DataNascimento = new DateTime(1995, 3, 1),  Nacionalidade = "Espanha",  Posicao = Posicao.Lateral, NumeroCamisa = 28, Altura = 1.75m, Peso = 73m, PePreferido = PePreferido.Esquerdo, TimeId = realMadrid.Id },
-                    new Jogador { Nome = "Jogador Genérico 29",    DataNascimento = new DateTime(1995, 4, 1),  Nacionalidade = "Espanha",  Posicao = Posicao.Zagueiro,NumeroCamisa = 29, Altura = 1.88m, Peso = 82m, PePreferido = PePreferido.Direito, TimeId = realMadrid.Id },
-                    new Jogador { Nome = "Jogador Genérico 30",    DataNascimento = new DateTime(1995, 5, 1),  Nacionalidade = "Espanha",  Posicao = Posicao.Atacante,NumeroCamisa = 30, Altura = 1.80m, Peso = 77m, PePreferido = PePreferido.Direito, TimeId = realMadrid.Id },
-                    new Jogador { Nome = "Jogador Genérico 31",    DataNascimento = new DateTime(1995, 6, 1),  Nacionalidade = "Espanha",  Posicao = Posicao.Goleiro, NumeroCamisa = 31, Altura = 1.89m, Peso = 85m, PePreferido = PePreferido.Direito, TimeId = realMadrid.Id }
+                    new Jogador { Nome = "Andrés Gallardo",        DataNascimento = new DateTime(1995, 1, 1),  Nacionalidade = "Espanha",  Posicao = Posicao.Meia,    NumeroCamisa = 26, Altura = 1.80m, Peso = 75m, PePreferido = PePreferido.Direito, TimeId = realMadrid.Id },
+                    new Jogador { Nome = "Iker Villanueva",        DataNascimento = new DateTime(1995, 2, 1),  Nacionalidade = "Espanha",  Posicao = Posicao.Volante, NumeroCamisa = 27, Altura = 1.82m, Peso = 78m, PePreferido = PePreferido.Direito, TimeId = realMadrid.Id },
+                    new Jogador { Nome = "Santiago Olmedo",        DataNascimento = new DateTime(1995, 3, 1),  Nacionalidade = "Espanha",  Posicao = Posicao.Lateral, NumeroCamisa = 28, Altura = 1.75m, Peso = 73m, PePreferido = PePreferido.Esquerdo, TimeId = realMadrid.Id },
+                    new Jogador { Nome = "Bruno Calderón",         DataNascimento = new DateTime(1995, 4, 1),  Nacionalidade = "Espanha",  Posicao = Posicao.Zagueiro,NumeroCamisa = 29, Altura = 1.88m, Peso = 82m, PePreferido = PePreferido.Direito, TimeId = realMadrid.Id },
+                    new Jogador { Nome = "Lucas Echeverría",       DataNascimento = new DateTime(1995, 5, 1),  Nacionalidade = "Espanha",  Posicao = Posicao.Atacante,NumeroCamisa = 30, Altura = 1.80m, Peso = 77m, PePreferido = PePreferido.Direito, TimeId = realMadrid.Id },
+                    new Jogador { Nome = "Tomás Riquelme",         DataNascimento = new DateTime(1995, 6, 1),  Nacionalidade = "Espanha",  Posicao = Posicao.Goleiro, NumeroCamisa = 31, Altura = 1.89m, Peso = 85m, PePreferido = PePreferido.Direito, TimeId = realMadrid.Id },
+                    new Jogador { Nome = "Eduardo Soriano",        DataNascimento = new DateTime(1996, 7, 7),  Nacionalidade = "Espanha",  Posicao = Posicao.Meia,    NumeroCamisa = 32, Altura = 1.79m, Peso = 74m, PePreferido = PePreferido.Direito, TimeId = realMadrid.Id },
+                    new Jogador { Nome = "Francisco Orellana",     DataNascimento = new DateTime(1997, 3, 14), Nacionalidade = "Espanha",  Posicao = Posicao.Zagueiro,NumeroCamisa = 33, Altura = 1.86m, Peso = 80m, PePreferido = PePreferido.Esquerdo, TimeId = realMadrid.Id },
+                    new Jogador { Nome = "Raúl Mena",              DataNascimento = new DateTime(1996, 9, 10), Nacionalidade = "Espanha",  Posicao = Posicao.Atacante,NumeroCamisa = 34, Altura = 1.81m, Peso = 76m, PePreferido = PePreferido.Direito, TimeId = realMadrid.Id },
+                    new Jogador { Nome = "Iván Montoya",           DataNascimento = new DateTime(1994, 11, 22),Nacionalidade = "Espanha",  Posicao = Posicao.Lateral, NumeroCamisa = 35, Altura = 1.76m, Peso = 72m, PePreferido = PePreferido.Esquerdo, TimeId = realMadrid.Id }
                 };
 
                 jogadores.ForEach(j => context.Jogadores.AddOrUpdate(p => new { p.Nome, p.NumeroCamisa }, j));
@@ -421,12 +425,12 @@
                     new Jogador { Nome = "Gerard Deulofeu",      DataNascimento = new DateTime(1994, 3, 13),  Nacionalidade = "Espanha",   Posicao = Posicao.Atacante, NumeroCamisa = 26, Altura = 1.70m, Peso = 68m, PePreferido = PePreferido.Esquerdo,   TimeId = barcelona.Id },
 
                     // Jogadores Genéricos
-                    new Jogador { Nome = "Jogador Genérico 26",  DataNascimento = new DateTime(1995, 1, 1),  Nacionalidade = "Espanha",   Posicao = Posicao.Meia,     NumeroCamisa = 26, Altura = 1.80m, Peso = 75m, PePreferido = PePreferido.Direito,    TimeId = barcelona.Id },
-                    new Jogador { Nome = "Jogador Genérico 27",  DataNascimento = new DateTime(1995, 2, 1),  Nacionalidade = "Espanha",   Posicao = Posicao.Volante,  NumeroCamisa = 27, Altura = 1.82m, Peso = 78m, PePreferido = PePreferido.Direito,    TimeId = barcelona.Id },
-                    new Jogador { Nome = "Jogador Genérico 28",  DataNascimento = new DateTime(1995, 3, 1),  Nacionalidade = "Espanha",   Posicao = Posicao.Lateral,  NumeroCamisa = 28, Altura = 1.75m, Peso = 73m, PePreferido = PePreferido.Esquerdo,   TimeId = barcelona.Id },
-                    new Jogador { Nome = "Jogador Genérico 29",  DataNascimento = new DateTime(1995, 4, 1),  Nacionalidade = "Espanha",   Posicao = Posicao.Zagueiro, NumeroCamisa = 29, Altura = 1.88m, Peso = 82m, PePreferido = PePreferido.Direito,    TimeId = barcelona.Id },
-                    new Jogador { Nome = "Jogador Genérico 30",  DataNascimento = new DateTime(1995, 5, 1),  Nacionalidade = "Espanha",   Posicao = Posicao.Atacante, NumeroCamisa = 30, Altura = 1.80m, Peso = 77m, PePreferido = PePreferido.Direito,    TimeId = barcelona.Id },
-                    new Jogador { Nome = "Jogador Genérico 31",  DataNascimento = new DateTime(1995, 6, 1),  Nacionalidade = "Espanha",   Posicao = Posicao.Goleiro,  NumeroCamisa = 31, Altura = 1.89m, Peso = 85m, PePreferido = PePreferido.Direito,    TimeId = barcelona.Id }
+                    new Jogador { Nome = "Raúl Fernández",     DataNascimento = new DateTime(1996, 1, 12), Nacionalidade = "Espanha", Posicao = Posicao.Goleiro,     NumeroCamisa = 36, Altura = 1.90m, Peso = 84m, PePreferido = PePreferido.Direito,  TimeId = barcelona.Id },
+                    new Jogador { Nome = "Andrés Navarro",     DataNascimento = new DateTime(1996, 2, 20), Nacionalidade = "Espanha", Posicao = Posicao.Lateral,     NumeroCamisa = 37, Altura = 1.74m, Peso = 70m, PePreferido = PePreferido.Esquerdo, TimeId = barcelona.Id },
+                    new Jogador { Nome = "Carlos Domínguez",   DataNascimento = new DateTime(1996, 3, 15), Nacionalidade = "Espanha", Posicao = Posicao.Zagueiro,    NumeroCamisa = 38, Altura = 1.86m, Peso = 81m, PePreferido = PePreferido.Direito,  TimeId = barcelona.Id },
+                    new Jogador { Nome = "Mario Gallardo",     DataNascimento = new DateTime(1996, 4, 5),  Nacionalidade = "Espanha", Posicao = Posicao.Meia, NumeroCamisa = 39, Altura = 1.79m, Peso = 76m, PePreferido = PePreferido.Esquerdo, TimeId = barcelona.Id },
+                    new Jogador { Nome = "Javier Peña",        DataNascimento = new DateTime(1996, 5, 25), Nacionalidade = "Espanha", Posicao = Posicao.Atacante,    NumeroCamisa = 40, Altura = 1.81m, Peso = 77m, PePreferido = PePreferido.Direito,  TimeId = barcelona.Id },
+                    new Jogador { Nome = "Héctor Lozano",      DataNascimento = new DateTime(1996, 6, 8),  Nacionalidade = "Espanha", Posicao = Posicao.Meia, NumeroCamisa = 41, Altura = 1.77m, Peso = 74m, PePreferido = PePreferido.Esquerdo, TimeId = barcelona.Id }
                 };
 
                 jogadores.ForEach(j => context.Jogadores.AddOrUpdate(p => new { p.Nome, p.NumeroCamisa }, j));
@@ -551,10 +555,12 @@
                     new Jogador { Nome = "Divock Origi",         DataNascimento = new DateTime(1995, 4, 18),  Nacionalidade = "Bélgica", Posicao = Posicao.Atacante,NumeroCamisa = 27, Altura = 1.84m, Peso = 81m, PePreferido = PePreferido.Direito, TimeId = liverpool.Id },
 
                     // Jogadores Genéricos
-                    new Jogador { Nome = "Jogador Genérico 28",  DataNascimento = new DateTime(1995, 3, 1),  Nacionalidade = "Espanha",   Posicao = Posicao.Lateral,  NumeroCamisa = 28, Altura = 1.75m, Peso = 73m, PePreferido = PePreferido.Esquerdo,   TimeId = barcelona.Id },
-                    new Jogador { Nome = "Jogador Genérico 29",  DataNascimento = new DateTime(1995, 4, 1),  Nacionalidade = "Espanha",   Posicao = Posicao.Zagueiro, NumeroCamisa = 29, Altura = 1.88m, Peso = 82m, PePreferido = PePreferido.Direito,    TimeId = barcelona.Id },
-                    new Jogador { Nome = "Jogador Genérico 30",  DataNascimento = new DateTime(1995, 5, 1),  Nacionalidade = "Espanha",   Posicao = Posicao.Atacante, NumeroCamisa = 30, Altura = 1.80m, Peso = 77m, PePreferido = PePreferido.Direito,    TimeId = barcelona.Id },
-                    new Jogador { Nome = "Jogador Genérico 31",  DataNascimento = new DateTime(1995, 6, 1),  Nacionalidade = "Espanha",   Posicao = Posicao.Goleiro,  NumeroCamisa = 31, Altura = 1.89m, Peso = 85m, PePreferido = PePreferido.Direito,    TimeId = barcelona.Id }
+                    new Jogador { Nome = "James Whitaker",     DataNascimento = new DateTime(1995, 3, 1), Nacionalidade = "Inglaterra", Posicao = Posicao.Lateral,   NumeroCamisa = 28, Altura = 1.75m, Peso = 73m, PePreferido = PePreferido.Esquerdo, TimeId = liverpool.Id },
+                    new Jogador { Nome = "Oliver Chambers",    DataNascimento = new DateTime(1995, 4, 1), Nacionalidade = "Inglaterra", Posicao = Posicao.Zagueiro,  NumeroCamisa = 29, Altura = 1.88m, Peso = 82m, PePreferido = PePreferido.Direito,  TimeId = liverpool.Id },
+                    new Jogador { Nome = "Ethan Woodward",     DataNascimento = new DateTime(1995, 5, 1), Nacionalidade = "Inglaterra", Posicao = Posicao.Atacante,  NumeroCamisa = 30, Altura = 1.80m, Peso = 77m, PePreferido = PePreferido.Direito,  TimeId = liverpool.Id },
+                    new Jogador { Nome = "George Hargreaves",  DataNascimento = new DateTime(1995, 6, 1), Nacionalidade = "Inglaterra", Posicao = Posicao.Goleiro,   NumeroCamisa = 31, Altura = 1.89m, Peso = 85m, PePreferido = PePreferido.Direito,  TimeId = liverpool.Id },
+                    new Jogador { Nome = "Thomas Redgrave",    DataNascimento = new DateTime(1995, 7, 1), Nacionalidade = "Inglaterra", Posicao = Posicao.Volante, NumeroCamisa = 32, Altura = 1.82m, Peso = 76m, PePreferido = PePreferido.Esquerdo, TimeId = liverpool.Id }
+
                 };
 
                 jogadores.ForEach(j => context.Jogadores.AddOrUpdate(p => new { p.Nome, p.NumeroCamisa }, j));
@@ -675,13 +681,13 @@
                     new Jogador { Nome = "Stefano Cappellini",        DataNascimento = new DateTime(1966, 4, 1),  Nacionalidade = "Itália", Posicao = Posicao.Atacante,NumeroCamisa = 23,Altura = 1.80m, Peso = 75m, PePreferido = PePreferido.Direito, TimeId = milan.Id },
 
                     // Genéricos
-                    new Jogador { Nome = "Jogador Genérico 24",       DataNascimento = new DateTime(1990, 1, 1), Nacionalidade = "Itália", Posicao = Posicao.Meia,    NumeroCamisa = 24, Altura = 1.80m, Peso = 75m, PePreferido = PePreferido.Direito, TimeId = milan.Id },
-                    new Jogador { Nome = "Jogador Genérico 25",       DataNascimento = new DateTime(1990, 2, 1), Nacionalidade = "Itália", Posicao = Posicao.Volante, NumeroCamisa = 25, Altura = 1.82m, Peso = 78m, PePreferido = PePreferido.Direito, TimeId = milan.Id },
-                    new Jogador { Nome = "Jogador Genérico 26",       DataNascimento = new DateTime(1990, 3, 1), Nacionalidade = "Itália", Posicao = Posicao.Lateral,  NumeroCamisa = 26, Altura = 1.75m, Peso = 73m, PePreferido = PePreferido.Esquerdo, TimeId = milan.Id },
-                    new Jogador { Nome = "Jogador Genérico 27",       DataNascimento = new DateTime(1990, 4, 1), Nacionalidade = "Itália", Posicao = Posicao.Zagueiro,NumeroCamisa = 27, Altura = 1.88m, Peso = 82m, PePreferido = PePreferido.Direito, TimeId = milan.Id },
-                    new Jogador { Nome = "Jogador Genérico 28",       DataNascimento = new DateTime(1990, 5, 1), Nacionalidade = "Itália", Posicao = Posicao.Atacante,NumeroCamisa = 28, Altura = 1.80m, Peso = 77m, PePreferido = PePreferido.Direito, TimeId = milan.Id },
-                    new Jogador { Nome = "Jogador Genérico 29",       DataNascimento = new DateTime(1990, 6, 1), Nacionalidade = "Itália", Posicao = Posicao.Meia,    NumeroCamisa = 29, Altura = 1.78m, Peso = 74m, PePreferido = PePreferido.Direito, TimeId = milan.Id },
-                    new Jogador { Nome = "Jogador Genérico 30",       DataNascimento = new DateTime(1990, 7, 1), Nacionalidade = "Itália", Posicao = Posicao.Goleiro,  NumeroCamisa = 30, Altura = 1.80m, Peso = 78m, PePreferido = PePreferido.Direito, TimeId = milan.Id }
+                    new Jogador { Nome = "Luca Bernardi",             DataNascimento = new DateTime(1990, 1, 1), Nacionalidade = "Itália", Posicao = Posicao.Meia,    NumeroCamisa = 24, Altura = 1.80m, Peso = 75m, PePreferido = PePreferido.Direito, TimeId = milan.Id },
+                    new Jogador { Nome = "Marco Rinaldi",             DataNascimento = new DateTime(1990, 2, 1), Nacionalidade = "Itália", Posicao = Posicao.Volante, NumeroCamisa = 25, Altura = 1.82m, Peso = 78m, PePreferido = PePreferido.Direito, TimeId = milan.Id },
+                    new Jogador { Nome = "Fabio Silvestri",           DataNascimento = new DateTime(1990, 3, 1), Nacionalidade = "Itália", Posicao = Posicao.Lateral, NumeroCamisa = 26, Altura = 1.75m, Peso = 73m, PePreferido = PePreferido.Esquerdo, TimeId = milan.Id },
+                    new Jogador { Nome = "Riccardo Mancini",          DataNascimento = new DateTime(1990, 4, 1), Nacionalidade = "Itália", Posicao = Posicao.Zagueiro,NumeroCamisa = 27, Altura = 1.88m, Peso = 82m, PePreferido = PePreferido.Direito, TimeId = milan.Id },
+                    new Jogador { Nome = "Antonio De Luca",           DataNascimento = new DateTime(1990, 5, 1), Nacionalidade = "Itália", Posicao = Posicao.Atacante,NumeroCamisa = 28, Altura = 1.80m, Peso = 77m, PePreferido = PePreferido.Direito, TimeId = milan.Id },
+                    new Jogador { Nome = "Nicola Greco",              DataNascimento = new DateTime(1990, 6, 1), Nacionalidade = "Itália", Posicao = Posicao.Meia,    NumeroCamisa = 29, Altura = 1.78m, Peso = 74m, PePreferido = PePreferido.Direito, TimeId = milan.Id },
+                    new Jogador { Nome = "Giulio Marchetti",          DataNascimento = new DateTime(1990, 7, 1), Nacionalidade = "Itália", Posicao = Posicao.Goleiro, NumeroCamisa = 30, Altura = 1.80m, Peso = 78m, PePreferido = PePreferido.Direito, TimeId = milan.Id }
                 };
 
                 jogadores.ForEach(j => context.Jogadores.AddOrUpdate(p => new { p.Nome, p.NumeroCamisa }, j));
@@ -807,9 +813,9 @@
                     new Jogador { Nome = "Tite",             DataNascimento = new DateTime(1930,6,4),   Nacionalidade = "Brasil", Posicao = Posicao.Atacante,NumeroCamisa = 16, Altura = 1.72m, Peso = 72m, PePreferido = PePreferido.Direito, TimeId = santos.Id },
 
                     // Genéricos
-                    new Jogador { Nome = "Jogador Genérico 28", DataNascimento = new DateTime(1940,1,1), Nacionalidade = "Brasil", Posicao = Posicao.Meia,    NumeroCamisa = 28, Altura = 1.75m, Peso = 70m, PePreferido = PePreferido.Direito, TimeId = santos.Id },
-                    new Jogador { Nome = "Jogador Genérico 29", DataNascimento = new DateTime(1940,2,1), Nacionalidade = "Brasil", Posicao = Posicao.Volante, NumeroCamisa = 29, Altura = 1.76m, Peso = 72m, PePreferido = PePreferido.Direito, TimeId = santos.Id },
-                    new Jogador { Nome = "Jogador Genérico 30", DataNascimento = new DateTime(1940,3,1), Nacionalidade = "Brasil", Posicao = Posicao.Zagueiro, NumeroCamisa = 30, Altura = 1.78m, Peso = 74m, PePreferido = PePreferido.Direito, TimeId = santos.Id }
+                    new Jogador { Nome = "Carlos Matheus",     DataNascimento = new DateTime(1940,1,1), Nacionalidade = "Brasil", Posicao = Posicao.Meia,    NumeroCamisa = 28, Altura = 1.75m, Peso = 70m, PePreferido = PePreferido.Direito, TimeId = santos.Id },
+                    new Jogador { Nome = "Eduardo Martins",    DataNascimento = new DateTime(1940,2,1), Nacionalidade = "Brasil", Posicao = Posicao.Volante, NumeroCamisa = 29, Altura = 1.76m, Peso = 72m, PePreferido = PePreferido.Direito, TimeId = santos.Id },
+                    new Jogador { Nome = "Fábio Henrique",     DataNascimento = new DateTime(1940,3,1), Nacionalidade = "Brasil", Posicao = Posicao.Zagueiro, NumeroCamisa = 30, Altura = 1.78m, Peso = 74m, PePreferido = PePreferido.Direito, TimeId = santos.Id },
                 };
 
                 jogadores.ForEach(j => context.Jogadores.AddOrUpdate(p => new { p.Nome, p.NumeroCamisa }, j));
@@ -879,7 +885,8 @@
                     new Jogador { Nome = "Dario Espinoza", DataNascimento = new DateTime(1994, 7, 25),      Nacionalidade = "Argentina", Posicao = Posicao.Atacante, NumeroCamisa = 96, Altura = 1.82m, Peso = 76m, PePreferido = PePreferido.Esquerdo, TimeId = ajax.Id },
                     new Jogador { Nome = "Nikola Jovanovic", DataNascimento = new DateTime(1993, 12, 5),    Nacionalidade = "Sérvia", Posicao = Posicao.Meia, NumeroCamisa = 97, Altura = 1.80m, Peso = 74m, PePreferido = PePreferido.Direito, TimeId = ajax.Id },
                     new Jogador { Nome = "Moussa Diarra", DataNascimento = new DateTime(1996, 4, 18),       Nacionalidade = "Mali", Posicao = Posicao.Zagueiro, NumeroCamisa = 98, Altura = 1.89m, Peso = 83m, PePreferido = PePreferido.Direito, TimeId = ajax.Id },
-                    new Jogador { Nome = "Viktor Petrenko", DataNascimento = new DateTime(1991, 8, 12),     Nacionalidade = "Ucrânia", Posicao = Posicao.Atacante, NumeroCamisa = 99, Altura = 1.77m, Peso = 71m, PePreferido = PePreferido.Esquerdo, TimeId = ajax.Id }
+                    new Jogador { Nome = "Viktor Petrenko", DataNascimento = new DateTime(1991, 8, 12),     Nacionalidade = "Ucrânia", Posicao = Posicao.Atacante, NumeroCamisa = 99, Altura = 1.77m, Peso = 71m, PePreferido = PePreferido.Esquerdo, TimeId = ajax.Id },
+                    new Jogador { Nome = "Federico Costa", DataNascimento = new DateTime(1997, 6, 14),      Nacionalidade = "Itália", Posicao = Posicao.Meia, NumeroCamisa = 80, Altura = 1.82m, Peso = 77m, PePreferido = PePreferido.Esquerdo, TimeId = ajax.Id }
                 };
 
                 // 3. Insere ou atualiza sem duplicar
@@ -1257,8 +1264,14 @@
             
                     // Jogadores fictícios (40–42)
                     new Jogador { Nome = "Lorenzo Rossi",      DataNascimento = new DateTime(1965, 4, 1),  Nacionalidade = "Itália",           Posicao = Posicao.Meia,    NumeroCamisa = 40, Altura = 1.80m, Peso = 75m, PePreferido = PePreferido.Direito, TimeId = juventus.Id },
-                    new Jogador { Nome = "Giovanni Esposito",  DataNascimento = new DateTime(1966, 8,12),  Nacionalidade = "Itália",           Posicao = Posicao.Zagueiro,NumeroCamisa = 41, Altura = 1.84m, Peso = 78m, PePreferido = PePreferido.Direito, TimeId = juventus.Id },
-                    new Jogador { Nome = "Marco Allegri",      DataNascimento = new DateTime(1964, 5,16),  Nacionalidade = "Itália",           Posicao = Posicao.Lateral, NumeroCamisa = 42, Altura = 1.77m, Peso = 72m, PePreferido = PePreferido.Esquerdo, TimeId = juventus.Id }
+                    new Jogador { Nome = "Carlos Alberto Silva", DataNascimento = new DateTime(1990, 1, 1), Nacionalidade = "Brasil",          Posicao = Posicao.Atacante, NumeroCamisa = 98, Altura = 1.80m, Peso = 75m, PePreferido = PePreferido.Direito, TimeId = juventus.Id },
+                    new Jogador { Nome = "Giovanni Esposito",  DataNascimento = new DateTime(1966, 8,22),  Nacionalidade = "Itália",           Posicao = Posicao.Zagueiro,NumeroCamisa = 41, Altura = 1.84m, Peso = 78m, PePreferido = PePreferido.Direito, TimeId = juventus.Id },
+                    new Jogador { Nome = "Marco Allegri",      DataNascimento = new DateTime(1964, 5,16),  Nacionalidade = "Itália",           Posicao = Posicao.Lateral, NumeroCamisa = 42, Altura = 1.77m, Peso = 72m, PePreferido = PePreferido.Esquerdo, TimeId = juventus.Id },
+                    new Jogador { Nome = "Alessandro Bianchi", DataNascimento = new DateTime(1995, 3, 12), Nacionalidade = "Itália",           Posicao = Posicao.Goleiro, NumeroCamisa = 55, Altura = 1.92m, Peso = 85m, PePreferido = PePreferido.Direito, TimeId = juventus.Id },
+                    new Jogador { Nome = "Ricardo Santos",     DataNascimento = new DateTime(1993, 7, 25), Nacionalidade = "Portugal",         Posicao = Posicao.Meia, NumeroCamisa = 56, Altura = 1.78m, Peso = 73m, PePreferido = PePreferido.Direito, TimeId = juventus.Id },
+                    new Jogador { Nome = "Matteo Ferrari",     DataNascimento = new DateTime(1998, 11, 5), Nacionalidade = "Itália",           Posicao = Posicao.Atacante, NumeroCamisa = 57, Altura = 1.85m, Peso = 80m, PePreferido = PePreferido.Esquerdo, TimeId = juventus.Id },
+                    new Jogador { Nome = "Davide Romano",      DataNascimento = new DateTime(1991, 2, 18), Nacionalidade = "Itália",           Posicao = Posicao.Zagueiro, NumeroCamisa = 58, Altura = 1.88m, Peso = 82m, PePreferido = PePreferido.Direito, TimeId = juventus.Id },
+                    new Jogador { Nome = "Luka Kovac",         DataNascimento = new DateTime(1996, 9, 30), Nacionalidade = "Croácia",          Posicao = Posicao.Lateral, NumeroCamisa = 59, Altura = 1.81m, Peso = 76m, PePreferido = PePreferido.Ambidestro, TimeId = juventus.Id }
                 };
 
                 // Insere ou atualiza sem duplicar
@@ -1331,7 +1344,7 @@
                 context.SaveChanges();
             }
 
-            var psg2020 = context.Times.FirstOrDefault(t => t.Nome == "Paris Saint‑Germain 2019–20");
+            var psg2020 = context.Times.FirstOrDefault(t => t.Nome == "Paris Saint-Germain 2020");
             if (psg2020 != null)
             {
 
@@ -1387,7 +1400,12 @@
                     new Jogador { Nome = "Neymar",              DataNascimento = new DateTime(1992,2,5),   Nacionalidade = "Brasil",    Posicao = Posicao.Atacante, NumeroCamisa = 10, Altura = 1.75m, Peso = 68m, PePreferido = PePreferido.Direito, TimeId = psg2020.Id },
                     new Jogador { Nome = "Eric Maxim Choupo-Moting", DataNascimento = new DateTime(1989,3,23), Nacionalidade = "Camarões",Posicao = Posicao.Atacante, NumeroCamisa = 17, Altura = 1.91m, Peso = 88m, PePreferido = PePreferido.Direito, TimeId = psg2020.Id },
                     new Jogador { Nome = "Mauro Icardi",        DataNascimento = new DateTime(1993,2,19),  Nacionalidade = "Argentina", Posicao = Posicao.Atacante, NumeroCamisa = 18, Altura = 1.80m, Peso = 73m, PePreferido = PePreferido.Direito, TimeId = psg2020.Id },
-                    new Jogador { Nome = "Arnaud Kalimuendo",   DataNascimento = new DateTime(2002,1,23),  Nacionalidade = "França",    Posicao = Posicao.Atacante, NumeroCamisa = 33, Altura = 1.78m, Peso = 78m, PePreferido = PePreferido.Direito, TimeId = psg2020.Id }
+                    new Jogador { Nome = "Arnaud Kalimuendo",   DataNascimento = new DateTime(2002,1,23),  Nacionalidade = "França",    Posicao = Posicao.Atacante, NumeroCamisa = 33, Altura = 1.78m, Peso = 78m, PePreferido = PePreferido.Direito, TimeId = psg2020.Id },
+                
+                    // Jogadores adicionais fictícios
+                    new Jogador { Nome = "José da Silva", DataNascimento = new DateTime(1994, 4, 12), Nacionalidade = "Brasil", Posicao = Posicao.Zagueiro, NumeroCamisa = 43, Altura = 1.85m, Peso = 80m, PePreferido = PePreferido.Direito, TimeId = psg2020.Id },
+                    new Jogador { Nome = "Miguel Costa", DataNascimento = new DateTime(1993, 5, 18), Nacionalidade = "Portugal", Posicao = Posicao.Meia, NumeroCamisa = 41, Altura = 1.75m, Peso = 70m, PePreferido = PePreferido.Esquerdo, TimeId = psg2020.Id },
+
                 };
 
                 // Insere ou atualiza sem duplicar

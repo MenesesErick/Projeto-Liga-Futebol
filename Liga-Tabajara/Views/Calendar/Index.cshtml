@@ -1,0 +1,23 @@
+﻿@model List<Partida>
+
+<h2>Calendário de Jogos</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Data</th>
+            <th>Mandante</th>
+            <th>Visitante</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var partida in Model)
+        {
+            <tr>
+                <td>@partida.DataHora.ToString("dd/MM/yyyy HH:mm")</td>
+                <td>@partida.TimeCasa.Nome</td>
+                <td>@partida.TimeVisitante.Nome</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -12,8 +12,33 @@
         </p>
     </section>
 
-    <!-- Tabela de Times -->
+    <!-- Botão para gerar o calendário -->
     <section class="row">
+        <div class="col-md-12">
+            @using (Html.BeginForm("Generate", "Calendar", FormMethod.Post))
+            {
+                <button type="submit" class="btn btn-primary">
+                    Gerar Calendário Automático
+                </button>
+            }
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger mt-2">@TempData["Error"]</div>
+            }
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success mt-2">@TempData["Success"]</div>
+            }
+        </div>
+    </section>
+
+    <a class="btn btn-success" href="@Url.Action("Index", "Calendar")">
+        Ver Calendário
+    </a>
+
+    <!-- Tabela de Times -->
+    <section class="row mt-4">
         <div class="col-md-12">
             <h2>Tabela de Times</h2>
             <table class="table table-striped table-hover">

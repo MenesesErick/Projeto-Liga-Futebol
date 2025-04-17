@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using System.Data.Entity;
 using Liga_Tabajara.Data; // Certifique-se de que o namespace está correto
 namespace Liga_Tabajara.Controllers
 {
@@ -10,6 +11,18 @@ namespace Liga_Tabajara.Controllers
         public ActionResult Index()
         {
             var times = db.Times.ToList();
+            foreach (var time in times)
+            {
+                int qtdJog = db.Jogadores.Count(j => j.TimeId == time.Id);
+                int qtdCom = db.ComissaoTecnica
+                               .Where(c => c.TimeId == time.Id)
+                               .Select(c => c.Cargo)
+                               .Distinct().Count();
+
+                time.Status = (qtdJog >= 30) && (qtdCom >= 5);
+            }
+
+            db.SaveChanges();
             return View(times);
         }
 

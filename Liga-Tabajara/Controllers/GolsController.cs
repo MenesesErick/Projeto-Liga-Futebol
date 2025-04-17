@@ -49,18 +49,33 @@ namespace Liga_Tabajara.Controllers
         // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "GolId,JogadorId,PartidaId,Minuto")] Gol gol)
+        public ActionResult Create([Bind(Include = "GolId,JogadorId,PartidaId,Minuto,Quantidade")] Gol gol)
         {
-            if (ModelState.IsValid)
+            // 1) checar ranges básicos
+            if (gol.Minuto < 0 || gol.Minuto > 120)
+                ModelState.AddModelError(nameof(gol.Minuto), "Minuto deve estar entre 0 e 120.");
+            if (gol.Quantidade <= 0)
+                ModelState.AddModelError(nameof(gol.Quantidade), "Quantidade de gols deve ser pelo menos 1.");
+
+            // 2) checar vínculo jogador–time–partida
+            var partida = db.Partidas.Find(gol.PartidaId);
+            var jogador = db.Jogadores.Find(gol.JogadorId);
+            if (partida == null || jogador == null ||
+                (jogador.TimeId != partida.TimeCasaId && jogador.TimeId != partida.TimeVisitanteId))
             {
-                db.Gols.Add(gol);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ModelState.AddModelError("", "O jogador deve pertencer a um dos dois times desta partida.");
             }
 
-            ViewBag.JogadorId = new SelectList(db.Jogadores, "Id", "Nome", gol.JogadorId);
-            ViewBag.PartidaId = new SelectList(db.Partidas, "Id", "Id", gol.PartidaId);
-            return View(gol);
+            if (!ModelState.IsValid)
+            {
+                ViewBag.JogadorId = new SelectList(db.Jogadores, "Id", "Nome", gol.JogadorId);
+                ViewBag.PartidaId = new SelectList(db.Partidas, "Id", "Id", gol.PartidaId);
+                return View(gol);
+            }
+
+            db.Gols.Add(gol);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: Gols/Edit/5

@@ -48,17 +48,25 @@ namespace Liga_Tabajara.Controllers
         // Para obter mais detalhes, confira https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Nome,Cargo,DataNascimento,TimeId")] ComissaoTecnica comissaoTecnica)
+        public ActionResult Create([Bind(Include = "Id,Nome,Cargo,DataNascimento,TimeId")] ComissaoTecnica comissao)
         {
-            if (ModelState.IsValid)
+            // verifica duplicidade de cargo no mesmo time
+            bool existe = db.ComissaoTecnica
+                .Any(c => c.TimeId == comissao.TimeId
+                       && c.Cargo == comissao.Cargo);
+            if (existe)
+                ModelState.AddModelError(nameof(comissao.Cargo),
+                    "Já existe um profissional com este cargo cadastrado para o time.");
+
+            if (!ModelState.IsValid)
             {
-                db.ComissaoTecnica.Add(comissaoTecnica);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.TimeId = new SelectList(db.Times, "Id", "Nome", comissao.TimeId);
+                return View(comissao);
             }
 
-            ViewBag.TimeId = new SelectList(db.Times, "Id", "Nome", comissaoTecnica.TimeId);
-            return View(comissaoTecnica);
+            db.ComissaoTecnica.Add(comissao);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         // GET: ComissaoTecnicas/Edit/5
