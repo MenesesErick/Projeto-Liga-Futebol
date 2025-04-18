@@ -1,22 +1,103 @@
 ﻿@model Partida
+@using Newtonsoft.Json
+@using System.Linq
+
+@{
+    // Lista de gols já registrados para pré-renderizar
+    var golsCasaList = Model.Gols
+        .Where(g => g.PartidaId == Model.Id && g.Jogador.TimeId == Model.TimeCasaId)
+        .ToList();
+    var golsVisitList = Model.Gols
+        .Where(g => g.PartidaId == Model.Id && g.Jogador.TimeId == Model.TimeVisitanteId)
+        .ToList();
+    int contadorCasa = golsCasaList.Count();
+    int contadorVisitante = golsVisitList.Count();
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.Erro))
+{
+    <div class="alert alert-danger">@ViewBag.Erro</div>
+}
+@if (!string.IsNullOrEmpty(ViewBag.Sucesso))
+{
+    <div class="alert alert-success">@ViewBag.Sucesso</div>
+}
 
 @using (Html.BeginForm("RegistrarPlacar", "Partidas", FormMethod.Post, new { id = "formRegistrar" }))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.Id)
+    @Html.Hidden("Id", Model.Id)
+
+    <script>
+        // Inicializa os contadores no cliente
+        let contadorCasa = @contadorCasa;
+        let contadorVisitante = @contadorVisitante;
+    </script>
 
     <div class="form-row mb-4">
         <div class="form-group col-md-6">
             <h4>Gols – @Model.TimeCasa.Nome</h4>
-            <div id="gols-casa-container"></div>
+            <div id="gols-casa-container">
+                @* Pré-renderiza cada gol já cadastrado *@
+                @for (int i = 0; i < golsCasaList.Count(); i++)
+                {
+                    var g = golsCasaList[i];
+                    <div class="form-row mb-2 align-items-center" data-gol-id="@g.GolId">
+                        <div class="col-8">
+                            <select name="Casa_Jogador_@(i+1)" class="form-control" required>
+                                <option value="">--Selecione jogador--</option>
+                                @foreach (SelectListItem j in (SelectList)ViewBag.JogadoresCasa)
+                                {
+                                    <option value="@j.Value" @(j.Value == g.JogadorId.ToString() ? "selected" : "")>
+                                        @j.Text
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <input name="Casa_Minuto_@(i+1)" type="number" min="1" max="120"
+                                   class="form-control" value="@g.Minuto" required />
+                        </div>
+                        <div class="col-1">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removerGol(this, @g.GolId)">×</button>
+                        </div>
+                    </div>
+                }
+            </div>
             <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="adicionarGol('casa')">
                 + Gol Casa
             </button>
             @Html.ValidationMessageFor(m => m.GolsCasa, null, new { @class = "text-danger" })
         </div>
+
         <div class="form-group col-md-6">
             <h4>Gols – @Model.TimeVisitante.Nome</h4>
-            <div id="gols-visitante-container"></div>
+            <div id="gols-visitante-container">
+                @for (int i = 0; i < golsVisitList.Count(); i++)
+                {
+                    var g = golsVisitList[i];
+                    <div class="form-row mb-2 align-items-center" data-gol-id="@g.GolId">
+                        <div class="col-8">
+                            <select name="Visitante_Jogador_@(i+1)" class="form-control" required>
+                                <option value="">--Selecione jogador--</option>
+                                @foreach (SelectListItem j in (SelectList)ViewBag.JogadoresVisitante)
+                                {
+                                    <option value="@j.Value" @(j.Value == g.JogadorId.ToString() ? "selected" : "")>
+                                        @j.Text
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-3">
+                            <input name="Visitante_Minuto_@(i+1)" type="number" min="1" max="120"
+                                   class="form-control" value="@g.Minuto" required />
+                        </div>
+                        <div class="col-1">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removerGol(this, @g.GolId)">×</button>
+                        </div>
+                    </div>
+                }
+            </div>
             <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="adicionarGol('visitante')">
                 + Gol Visitante
             </button>
@@ -24,24 +105,24 @@
         </div>
     </div>
 
-    <button type="submit" class="btn btn-success">Salvar Placar</button>
+    <button type="submit" class="btn btn-success">
+        @(Model.GolsCasa.HasValue ? "Atualizar Placar" : "Salvar Placar")
+    </button>
 }
 
 @section Scripts {
     <script>
-    let contadorCasa = 0, contadorVisitante = 0;
-
     function adicionarGol(tipo) {
         const container = document.getElementById(`gols-${tipo}-container`);
         const index = tipo === 'casa' ? ++contadorCasa : ++contadorVisitante;
 
         // Serializa SelectList do ViewBag para JS
         const lista = tipo === 'casa'
-            ? @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.JogadoresCasa))
-            : @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.JogadoresVisitante));
+            ? @Html.Raw(JsonConvert.SerializeObject(ViewBag.JogadoresCasa))
+            : @Html.Raw(JsonConvert.SerializeObject(ViewBag.JogadoresVisitante));
 
         const div = document.createElement("div");
-        div.className = "form-row mb-2";
+        div.className = "form-row mb-2 align-items-center";
         div.innerHTML = `
             <div class="col-8">
                 <select name="${tipo === 'casa' ? 'Casa_Jogador_' : 'Visitante_Jogador_'}${index}"
@@ -50,11 +131,37 @@
                     ${lista.map(j => `<option value="${j.Value}">${j.Text}</option>`).join('')}
                 </select>
             </div>
-            <div class="col-4">
+            <div class="col-3">
                 <input name="${tipo === 'casa' ? 'Casa_Minuto_' : 'Visitante_Minuto_'}${index}"
                        type="number" min="1" max="120" class="form-control" placeholder="Minuto" required />
+            </div>
+            <div class="col-1">
+                <button type="button" class="btn btn-danger btn-sm" onclick="removerGol(this)">×</button>
             </div>`;
         container.appendChild(div);
+    }
+
+    function removerGol(botao, golId) {
+        const linha = botao.closest('.form-row');
+        if (golId) {
+            // Excluir no servidor via AJAX
+            $.ajax({
+                url: '/Gols/Delete/' + golId,
+                type: 'POST',
+                data: {
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function() {
+                    if (linha) linha.remove();
+                },
+                error: function(xhr) {
+                    alert('Erro ao excluir o gol: ' + xhr.responseText);
+                }
+            });
+        } else {
+            // Apenas remove do DOM para gols novos
+            if (linha) linha.remove();
+        }
     }
     </script>
 }

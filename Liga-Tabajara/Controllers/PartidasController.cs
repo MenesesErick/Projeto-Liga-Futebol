@@ -117,12 +117,16 @@ namespace Liga_Tabajara.Controllers
             if (!ModelState.IsValid)
             {
                 CarregarViewBags(partida);
+
+                partida.TimeCasa = db.Times.Find(partida.TimeCasaId);
+                partida.TimeVisitante = db.Times.Find(partida.TimeVisitanteId);
+
+
                 return View(partida);
             }
-
             if (!PartidaValida(partida))
             {
-                ModelState.AddModelError("", "Partida inválida: mandante e visitante distintos; cada time só pode jogar uma vez na mesma data.");
+                ModelState.AddModelError("", "Partida inválida...");
                 CarregarViewBags(partida);
                 return View(partida);
             }
@@ -173,15 +177,20 @@ namespace Liga_Tabajara.Controllers
             var partida = db.Partidas
                 .Include(p => p.TimeCasa)
                 .Include(p => p.TimeVisitante)
+                .Include(p => p.Gols.Select(g => g.Jogador))
                 .FirstOrDefault(p => p.Id == id);
             if (partida == null) return HttpNotFound();
 
+            CarregarViewBags(partida);
             ViewBag.JogadoresCasa = new SelectList(
                 db.Jogadores.Where(j => j.TimeId == partida.TimeCasaId).OrderBy(j => j.Nome),
                 "Id", "Nome");
             ViewBag.JogadoresVisitante = new SelectList(
                 db.Jogadores.Where(j => j.TimeId == partida.TimeVisitanteId).OrderBy(j => j.Nome),
                 "Id", "Nome");
+
+            ViewBag.Sucesso = TempData["Sucesso"];
+            ViewBag.Erro = TempData["Erro"];
 
             return View(partida);
         }
@@ -192,55 +201,57 @@ namespace Liga_Tabajara.Controllers
         public ActionResult RegistrarPlacar(int id, FormCollection form)
         {
             var partida = db.Partidas.Find(id);
-            if (partida == null) return HttpNotFound();
+            if (partida == null)
+                return HttpNotFound();
 
-            // Remove gols antigos
+            // Valida rodada anterior...
+            var todas = db.Partidas.OrderBy(p => p.DataHora).ToList();
+            int idx = todas.FindIndex(p => p.Id == id);
+            int rodadaAtual = (idx / 10) + 1;
+            if (rodadaAtual > 1)
+            {
+                var anteriores = todas.Skip((rodadaAtual - 2) * 10).Take(10);
+                bool existeSemGols = anteriores.Any(p => !p.GolsCasa.HasValue || !p.GolsVisitante.HasValue);
+                if (existeSemGols)
+                {
+                    TempData["Erro"] = $"Você deve primeiro registrar gols de todas as partidas da rodada {rodadaAtual - 1}.";
+                    return RedirectToAction("RegistrarPlacar", new { id });
+                }
+            }
+
             db.Gols.RemoveRange(db.Gols.Where(g => g.PartidaId == id));
 
-            // Registrar gols de casa
             int golsCasa = 0;
             var keysCasa = form.AllKeys.Where(k => k.StartsWith("Casa_Jogador_")).OrderBy(k => k);
-            foreach (var k in keysCasa)
+            foreach (var key in keysCasa)
             {
-                if (int.TryParse(form[k], out int jId) &&
-                    int.TryParse(form[k.Replace("Jogador", "Minuto")], out int m))
+                if (int.TryParse(form[key], out int jogadorId) &&
+                    int.TryParse(form[key.Replace("Jogador", "Minuto")], out int minuto))
                 {
-                    db.Gols.Add(new Gol
-                    {
-                        PartidaId = id,
-                        JogadorId = jId,
-                        Minuto = m,
-                        Quantidade = 1
-                    });
+                    db.Gols.Add(new Gol { PartidaId = id, JogadorId = jogadorId, Minuto = minuto, Quantidade = 1 });
                     golsCasa++;
                 }
             }
 
-            // Registrar gols de visitante
             int golsVisitante = 0;
             var keysVisit = form.AllKeys.Where(k => k.StartsWith("Visitante_Jogador_")).OrderBy(k => k);
-            foreach (var k in keysVisit)
+            foreach (var key in keysVisit)
             {
-                if (int.TryParse(form[k], out int jId) &&
-                    int.TryParse(form[k.Replace("Jogador", "Minuto")], out int m))
+                if (int.TryParse(form[key], out int jogadorId) &&
+                    int.TryParse(form[key.Replace("Jogador", "Minuto")], out int minuto))
                 {
-                    db.Gols.Add(new Gol
-                    {
-                        PartidaId = id,
-                        JogadorId = jId,
-                        Minuto = m,
-                        Quantidade = 1
-                    });
+                    db.Gols.Add(new Gol { PartidaId = id, JogadorId = jogadorId, Minuto = minuto, Quantidade = 1 });
                     golsVisitante++;
                 }
             }
 
-            // Atualiza totais
             partida.GolsCasa = golsCasa;
             partida.GolsVisitante = golsVisitante;
-
+            db.Entry(partida).State = EntityState.Modified;
             db.SaveChanges();
-            return RedirectToAction("Index");
+
+            TempData["Sucesso"] = "Gols registrados com sucesso.";
+            return RedirectToAction("RegistrarPlacar", new { id });
         }
 
         protected override void Dispose(bool disposing)
@@ -262,11 +273,10 @@ namespace Liga_Tabajara.Controllers
                 return false;
 
             var data = DbFunctions.TruncateTime(partida.DataHora);
-            bool conflito = db.Partidas.Any(p => p.Id != partida.Id
-                && DbFunctions.TruncateTime(p.DataHora) == data
-                && (p.TimeCasaId == partida.TimeCasaId || p.TimeVisitanteId == partida.TimeCasaId
-                || p.TimeCasaId == partida.TimeVisitanteId || p.TimeVisitanteId == partida.TimeVisitanteId));
-            return !conflito;
+            return !db.Partidas.Any(p => p.Id != partida.Id &&
+                DbFunctions.TruncateTime(p.DataHora) == data &&
+                (p.TimeCasaId == partida.TimeCasaId || p.TimeVisitanteId == partida.TimeCasaId ||
+                 p.TimeCasaId == partida.TimeVisitanteId || p.TimeVisitanteId == partida.TimeVisitanteId));
         }
         #endregion
     }

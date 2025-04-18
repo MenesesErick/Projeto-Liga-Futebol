@@ -4,68 +4,100 @@
     ViewBag.Title = "Jogadores";
 }
 
-<h2>Pesquisar Jogadores</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Pesquisar Jogadores</h2>
+    <div class="mb-3 text-end">
+        <a href="@Url.Action("Create", "Jogadores")" class="btn btn-success">
+            <i class="bi bi-plus-circle me-1"></i>Criar Jogador
+        </a>
+    </div>
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            @using (Html.BeginForm("Index", "Jogadores", FormMethod.Get, new { @class = "row g-3 align-items-end" }))
+            {
+                <div class="col-md-4">
+                    @Html.Label("nome", "Nome", new { @class = "form-label" })
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        @Html.TextBox("nome", ViewBag.FiltroNome as string,
+                            new { @class = "form-control", placeholder = "Digite o nome..." })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    @Html.Label("posicao", "Posição", new { @class = "form-label" })
+                    @Html.DropDownList("posicao",
+                        (SelectList)ViewBag.Posicoes,
+                        "-- Todas --",
+                        new { @class = "form-select" })
+                </div>
+                <div class="col-md-4">
+                    @Html.Label("pePreferido", "Pé Preferido", new { @class = "form-label" })
+                    @Html.DropDownList("pePreferido",
+                        (SelectList)ViewBag.PesPreferidos,
+                        "-- Todos --",
+                        new { @class = "form-select" })
+                </div>
 
-@using (Html.BeginForm("Index", "Jogadores", FormMethod.Get))
-{
-    <div class="row mb-3">
-        <div class="col-md-4">
-            @Html.Label("nome", "Nome")
-            @Html.TextBox("nome", ViewBag.FiltroNome as string,
-                new { @class = "form-control", placeholder = "Digite o nome..." })
-        </div>
-        <div class="col-md-4">
-            @Html.Label("posicao", "Posição")
-            @Html.DropDownList("posicao",
-                (SelectList)ViewBag.Posicoes,
-                "-- Todas --",
-                new { @class = "form-control", @value = ViewBag.FiltroPosicao })
-        </div>
-        <div class="col-md-4">
-            @Html.Label("pePreferido", "Pé Preferido")
-            @Html.DropDownList("pePreferido",
-                (SelectList)ViewBag.PesPreferidos,
-                "-- Todos --",
-                new { @class = "form-control", @value = ViewBag.FiltroPePreferido })
+                <div class="col-12 text-end mt-3">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-filter-circle me-1"></i>Filtrar
+                    </button>
+                    <a href="@Url.Action("Index", "Jogadores")" class="btn btn-outline-secondary ms-2">
+                        <i class="bi bi-arrow-clockwise me-1"></i>Limpar
+                    </a>
+                </div>
+            }
         </div>
     </div>
-    <button type="submit" class="btn btn-primary">Filtrar</button>
-}
 
-<table class="table table-striped table-hover mt-4">
-    <thead class="table-light">
-        <tr>
-            <th>@Html.DisplayNameFor(m => m.First().Time.Nome)</th>
-            <th>@Html.DisplayNameFor(m => m.First().Nome)</th>
-            <th>@Html.DisplayNameFor(m => m.First().DataNascimento)</th>
-            <th>@Html.DisplayNameFor(m => m.First().Nacionalidade)</th>
-            <th>@Html.DisplayNameFor(m => m.First().Posicao)</th>
-            <th>@Html.DisplayNameFor(m => m.First().NumeroCamisa)</th>
-            <th>@Html.DisplayNameFor(m => m.First().Altura)</th>
-            <th>@Html.DisplayNameFor(m => m.First().Peso)</th>
-            <th>@Html.DisplayNameFor(m => m.First().PePreferido)</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var j in Model)
-        {
-            <tr>
-                <td>@j.Time.Nome</td>
-                <td>@j.Nome</td>
-                <td>@j.DataNascimento.ToString("dd/MM/yyyy")</td>
-                <td>@j.Nacionalidade</td>
-                <td>@j.Posicao</td>
-                <td>@j.NumeroCamisa</td>
-                <td>@j.Altura</td>
-                <td>@j.Peso</td>
-                <td>@j.PePreferido</td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = j.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = j.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = j.Id })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <div class="table-responsive shadow-sm">
+        <table class="table table-striped table-hover align-middle mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.First().Time.Nome)</th>
+                    <th>@Html.DisplayNameFor(m => m.First().Nome)</th>
+                    <th>@Html.DisplayNameFor(m => m.First().DataNascimento)</th>
+                    <th>@Html.DisplayNameFor(m => m.First().Nacionalidade)</th>
+                    <th>@Html.DisplayNameFor(m => m.First().Posicao)</th>
+                    <th>@Html.DisplayNameFor(m => m.First().NumeroCamisa)</th>
+                    <th>@Html.DisplayNameFor(m => m.First().Altura)</th>
+                    <th>@Html.DisplayNameFor(m => m.First().Peso)</th>
+                    <th>@Html.DisplayNameFor(m => m.First().PePreferido)</th>
+                    <th class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var jogador in Model)
+                {
+                    <tr style="cursor:pointer;" onclick="window.location='@Url.Action("Details", "Jogadores", new { id = jogador.Id })'">
+                        <td>@jogador.Time.Nome</td>
+                        <td>@jogador.Nome</td>
+                        <td>@jogador.DataNascimento.ToString("dd/MM/yyyy")</td>
+                        <td>@jogador.Nacionalidade</td>
+                        <td>@jogador.Posicao</td>
+                        <td>@jogador.NumeroCamisa</td>
+                        <td>@jogador.Altura.ToString("F2") m</td>
+                        <td>@jogador.Peso.ToString("F1") kg</td>
+                        <td>@jogador.PePreferido</td>
+                        <td class="text-center">
+                            <a href="@Url.Action("Edit", "Jogadores", new { id = jogador.Id })" class="btn btn-sm btn-outline-primary me-1" title="Editar">
+                                <i class="bi bi-pencil me-1"></i>Editar
+                            </a>
+                            <a href="@Url.Action("Delete", "Jogadores", new { id = jogador.Id })" class="btn btn-sm btn-outline-danger" title="Excluir">
+                                <i class="bi bi-trash me-1"></i>Excluir
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+}

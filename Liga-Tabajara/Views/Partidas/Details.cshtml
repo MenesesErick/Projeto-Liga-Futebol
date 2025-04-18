@@ -1,93 +1,138 @@
 ﻿@model Partida
 
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Detalhes da Partida";
 }
 
-<h2 class="mb-4">Detalhes da Partida</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">
+        <i class="bi bi-bar-chart-line me-2"></i>
+        Detalhes da Partida
+    </h2>
 
-<div class="card mb-4 shadow-sm">
-    <div class="card-body text-center">
-        <!-- Placar em destaque -->
-        <div class="d-flex justify-content-center align-items-center mb-3">
-            <h4 class="mb-0 mr-3">@Model.TimeCasa.Nome</h4>
-            <h1 class="mb-0 text-primary">@Model.GolsCasa</h1>
-            <h2 class="mx-2 mb-0">x</h2>
-            <h1 class="mb-0 text-danger">@Model.GolsVisitante</h1>
-            <h4 class="mb-0 ml-3">@Model.TimeVisitante.Nome</h4>
+    <!-- Placar principal em card -->
+    <div class="card shadow-sm mb-5">
+        <div class="card-body text-center">
+            <div class="d-flex justify-content-center align-items-center mb-2">
+                <span class="badge bg-primary fs-5 me-3">@Model.TimeCasa.Nome</span>
+                <span class="fs-1 fw-bold text-primary me-2">@Model.GolsCasa</span>
+                <span class="fs-1 fw-bold mx-2">×</span>
+                <span class="fs-1 fw-bold text-danger ms-2">@Model.GolsVisitante</span>
+                <span class="badge bg-danger fs-5 ms-3">@Model.TimeVisitante.Nome</span>
+            </div>
+            <p class="text-muted small">
+                <i class="bi bi-clock me-1"></i>
+                @Model.DataHora.ToString("dd/MM/yyyy 'às' HH:mm")
+            </p>
         </div>
-        <p class="text-muted">@Model.DataHora.ToString("dd/MM/yyyy HH:mm")</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Gols do time da casa -->
+        <div class="col-md-6">
+            <div class="card h-100 border-primary">
+                <div class="card-header bg-primary text-white">
+                    <i class="bi bi-flag-fill me-1"></i>
+                    Gols – @Model.TimeCasa.Nome
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Min.</th>
+                                <th scope="col">Jogador</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var golsCasa = Model.Gols
+                                    .Where(g => g.Jogador.TimeId == Model.TimeCasaId)
+                                    .OrderBy(g => g.Minuto);
+                                if (!golsCasa.Any())
+                                {
+                                    <tr>
+                                        <td colspan="2" class="text-center py-3 text-muted">
+                                            <i class="bi bi-dash-circle me-1"></i>
+                                            Nenhum gol registrado
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    foreach (var gol in golsCasa)
+                                    {
+                                        <tr>
+                                            <td>@gol.Minuto&#39; </td>
+                                            <td>@gol.Jogador.Nome</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gols do time visitante -->
+        <div class="col-md-6">
+            <div class="card h-100 border-danger">
+                <div class="card-header bg-danger text-white">
+                    <i class="bi bi-flag-fill me-1"></i>
+                    Gols – @Model.TimeVisitante.Nome
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">Min.</th>
+                                <th scope="col">Jogador</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                var golsVisit = Model.Gols
+                                    .Where(g => g.Jogador.TimeId == Model.TimeVisitanteId)
+                                    .OrderBy(g => g.Minuto);
+                                if (!golsVisit.Any())
+                                {
+                                    <tr>
+                                        <td colspan="2" class="text-center py-3 text-muted">
+                                            <i class="bi bi-dash-circle me-1"></i>
+                                            Nenhum gol registrado
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    foreach (var gol in golsVisit)
+                                    {
+                                        <tr>
+                                            <td>@gol.Minuto&#39; </td>
+                                            <td>@gol.Jogador.Nome</td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botões de ação -->
+    <div class="mt-5 d-flex justify-content-end">
+        <a href="@Url.Action("Index")" class="btn btn-secondary me-2">
+            <i class="bi bi-arrow-left me-1"></i>Voltar
+        </a>
+        <a href="@Url.Action("Edit", new { id = Model.Id })" class="btn btn-primary">
+            <i class="bi bi-pencil-square me-1"></i>Editar
+        </a>
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-6">
-        <h4 class="mb-3">Gols – @Model.TimeCasa.Nome</h4>
-        <table class="table table-hover table-sm">
-            <thead class="thead-light">
-                <tr>
-                    <th>Minuto</th>
-                    <th>Jogador</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    var golsCasa = Model.Gols
-                        .Where(g => g.Jogador.TimeId == Model.TimeCasaId)
-                        .OrderBy(g => g.Minuto);
-                    if (!golsCasa.Any())
-                    {
-                        <tr><td colspan="2" class="text-center">Nenhum gol registrado</td></tr>
-                    }
-                    else
-                    {
-                        foreach (var gol in golsCasa)
-                        {
-                            <tr>
-                                <td>@gol.Minuto&#39; </td>
-                                <td>@gol.Jogador.Nome</td>
-                            </tr>
-                        }
-                    }
-                }
-            </tbody>
-        </table>
-    </div>
-    <div class="col-md-6">
-        <h4 class="mb-3">Gols – @Model.TimeVisitante.Nome</h4>
-        <table class="table table-hover table-sm">
-            <thead class="thead-light">
-                <tr>
-                    <th>Minuto</th>
-                    <th>Jogador</th>
-                </tr>
-            </thead>
-            <tbody>
-                @{
-                    var golsVisit = Model.Gols
-                        .Where(g => g.Jogador.TimeId == Model.TimeVisitanteId)
-                        .OrderBy(g => g.Minuto);
-                    if (!golsVisit.Any())
-                    {
-                        <tr><td colspan="2" class="text-center">Nenhum gol registrado</td></tr>
-                    }
-                    else
-                    {
-                        foreach (var gol in golsVisit)
-                        {
-                            <tr>
-                                <td>@gol.Minuto&#39; </td>
-                                <td>@gol.Jogador.Nome</td>
-                            </tr>
-                        }
-                    }
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div class="mt-4">
-    @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-secondary" })
-    @Html.ActionLink("Editar", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary ml-2" })
-</div>
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+}

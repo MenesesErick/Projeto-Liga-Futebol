@@ -244,6 +244,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\JogadoresController.cs" />
     <Compile Include="Controllers\PartidasController.cs" />
+    <Compile Include="Controllers\SimulacaoController.cs" />
     <Compile Include="Controllers\TimesController.cs" />
     <Compile Include="Data\LigaContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -373,6 +374,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Simulacao\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,120 +1,87 @@
 ﻿@model Time
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalhes do Time";
 }
 
-<h2>Details</h2>
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">Detalhes do Time</h3>
+            <div>
+                @Html.ActionLink("Editar", "Edit", new { id = Model.Id }, new { @class = "btn btn-sm btn-primary me-2" })
+                @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-sm btn-secondary" })
+            </div>
+        </div>
+        <div class="card-body">
+            <dl class="row mb-4">
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Nome)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Nome)</dd>
 
-<div>
-    <h4>Time</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Cidade)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Cidade)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Estado)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Estado)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Cidade)
-        </dt>
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.AnoFundacao)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.AnoFundacao)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Cidade)
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Estadio)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.Estadio)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.CapacidadeEstadio)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.CapacidadeEstadio)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.CorUniformePrincipal)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.CorUniformePrincipal)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.AnoFundacao)
-        </dt>
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.CorUniformeSecundario)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(m => m.CorUniformeSecundario)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.AnoFundacao)
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(m => m.Status)</dt>
+                <dd class="col-sm-9">
+                    <span class="badge @(Model.Status ? "bg-success" : "bg-secondary")">
+                        @(Model.Status ? "Ativo" : "Inativo")
+                    </span>
+                </dd>
+            </dl>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Estadio)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Estadio)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CapacidadeEstadio)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CapacidadeEstadio)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CorUniformePrincipal)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CorUniformePrincipal)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.CorUniformeSecundario)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.CorUniformeSecundario)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Status)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Status)
-        </dd>
-
-    </dl>
-
-    <h4>Jogadores</h4>
-    @if (Model.Jogadores != null && Model.Jogadores.Any())
-    {
-        <ul>
-            @foreach (var jogador in Model.Jogadores)
+            <h5>Jogadores</h5>
+            @if (Model.Jogadores != null && Model.Jogadores.Any())
             {
-                <li>@jogador.Nome - @jogador.Posicao</li>
+                <ul class="list-group mb-4">
+                    @foreach (var jogador in Model.Jogadores)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            @jogador.Nome
+                            <span class="badge bg-primary rounded-pill">@jogador.Posicao</span>
+                        </li>
+                    }
+                </ul>
             }
-        </ul>
-    }
-    else
-    {
-        <p>Nenhum jogador cadastrado.</p>
-    }
-
-    <h4>Comissão Técnica</h4>
-    @if (Model.Comissao != null && Model.Comissao.Any())
-    {
-        <ul>
-            @foreach (var membro in Model.Comissao)
+            else
             {
-                <li>@membro.Nome - @membro.Cargo</li>
+                <p class="text-muted mb-4">Nenhum jogador cadastrado.</p>
             }
-        </ul>
-    }
-    else
-    {
-        <p>Nenhum membro da comissão cadastrado.</p>
-    }
+
+            <h5>Comissão Técnica</h5>
+            @if (Model.Comissao != null && Model.Comissao.Any())
+            {
+                <ul class="list-group">
+                    @foreach (var membro in Model.Comissao)
+                    {
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            @membro.Nome
+                            <span class="text-muted">@membro.Cargo</span>
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="text-muted">Nenhum membro da comissão cadastrado.</p>
+            }
+        </div>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

@@ -1,67 +1,71 @@
 ﻿@model Partida
 
 @{
-    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Criar Partida";
 }
 
-<h2>Create</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">
+        <i class="bi bi-plus-circle me-2 text-success"></i>
+        Criar Partida
+    </h2>
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Partida</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.DataHora, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DataHora, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DataHora, "", new { @class = "text-danger" })
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.DataHora, new { @class = "form-label" })
+                    @Html.TextBoxFor(
+                        model => model.DataHora,
+                        "{0:yyyy-MM-ddTHH:mm}",
+                        new { @class = "form-control", type = "datetime-local" }
+                    )
+                    @Html.ValidationMessageFor(model => model.DataHora, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.TimeCasaId, "Time Casa", new { @class = "form-label" })
+                    @Html.DropDownList("TimeCasaId", null, "-- Selecione --", new { @class = "form-select" })
+                    @Html.ValidationMessageFor(model => model.TimeCasaId, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.TimeVisitanteId, "Time Visitante", new { @class = "form-label" })
+                    @Html.DropDownList("TimeVisitanteId", null, "-- Selecione --", new { @class = "form-select" })
+                    @Html.ValidationMessageFor(model => model.TimeVisitanteId, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.GolsCasa, new { @class = "form-label" })
+                    @Html.TextBoxFor(model => model.GolsCasa, new { @class = "form-control", type = "number", min = "0" })
+                    @Html.ValidationMessageFor(model => model.GolsCasa, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="mb-3">
+                    @Html.LabelFor(model => model.GolsVisitante, new { @class = "form-label" })
+                    @Html.TextBoxFor(model => model.GolsVisitante, new { @class = "form-control", type = "number", min = "0" })
+                    @Html.ValidationMessageFor(model => model.GolsVisitante, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-save me-1"></i>Salvar
+                    </button>
+                    <a href="@Url.Action("Index")" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left me-1"></i>Voltar
+                    </a>
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TimeCasaId, "TimeCasaId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("TimeCasaId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.TimeCasaId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TimeVisitanteId, "TimeVisitanteId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("TimeVisitanteId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.TimeVisitanteId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.GolsCasa, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.GolsCasa, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.GolsCasa, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.GolsVisitante, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.GolsVisitante, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.GolsVisitante, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
+    }
 </div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+}

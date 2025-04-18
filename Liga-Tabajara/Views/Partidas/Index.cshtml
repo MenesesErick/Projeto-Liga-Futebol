@@ -9,88 +9,112 @@
         .GroupBy(x => x.Rodada);
 }
 
-<h2 class="mb-4">Partidas</h2>
+<div class="container mt-4">
+    <h2 class="mb-4">Partidas</h2>
 
-<p>
-    @Html.ActionLink("Criar nova partida", "Create", null, new { @class = "btn btn-success" })
-</p>
-
-<!-- Filtro -->
-@using (Html.BeginForm("Index", "Partidas", FormMethod.Get, new { @class = "mb-4" }))
-{
-    <div class="card p-3">
-        <div class="form-row">
-            <div class="form-group col-md-2">
-                <label for="dataFiltro">Data</label>
-                <input id="dataFiltro" type="date" name="data" class="form-control" value="@ViewBag.DataFiltro" />
+    <!-- Filtro estilizado -->
+    @using (Html.BeginForm("Index", "Partidas", FormMethod.Get, new { @class = "card mb-4 shadow-sm p-3" }))
+    {
+        <div class="row g-3 align-items-end">
+            <div class="col-md-3">
+                @Html.Label("data", "Data", new { @class = "form-label" })
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-calendar-event"></i></span>
+                    <input id="dataFiltro" type="date" name="data" class="form-control" value="@ViewBag.DataFiltro" />
+                </div>
             </div>
-            <div class="form-group col-md-3">
-                <label for="timeFiltro">Time</label>
-                @Html.DropDownList("timeId", (SelectList)ViewBag.Times, "Todos", new { @class = "form-control", id = "timeFiltro" })
+            <div class="col-md-3">
+                @Html.Label("timeId", "Time", new { @class = "form-label" })
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-people"></i></span>
+                    @Html.DropDownList("timeId", (SelectList)ViewBag.Times, "Todos", new { @class = "form-select" })
+                </div>
             </div>
-            <div class="form-group col-md-3">
-                <label for="estadioFiltro">Estádio</label>
-                <input id="estadioFiltro" type="text" name="estadio" class="form-control" placeholder="Nome do estádio" value="@ViewBag.EstadioFiltro" />
+            <div class="col-md-3">
+                @Html.Label("estadio", "Estádio", new { @class = "form-label" })
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-building"></i></span>
+                    <input id="estadioFiltro" type="text" name="estadio" class="form-control" placeholder="Nome do estádio" value="@ViewBag.EstadioFiltro" />
+                </div>
             </div>
-            <div class="form-group col-md-3">
-                <label for="jogoFiltro">Jogo</label>
-                <input id="jogoFiltro" type="text" name="jogo" class="form-control" placeholder="Ex: TimeA x TimeB" value="@ViewBag.JogoFiltro" />
+            <div class="col-md-3">
+                @Html.Label("jogo", "Jogo", new { @class = "form-label" })
+                <div class="input-group">
+                    <span class="input-group-text"><i class="bi bi-x-octagon"></i></span>
+                    <input id="jogoFiltro" type="text" name="jogo" class="form-control" placeholder="Ex: TimeA x TimeB" value="@ViewBag.JogoFiltro" />
+                </div>
             </div>
-            <div class="form-group col-md-1 align-self-end">
-                <button type="submit" class="btn btn-primary btn-block">Filtrar</button>
+            <div class="col-12 text-end">
+                <button type="submit" class="btn btn-primary me-2">
+                    <i class="bi bi-filter-circle me-1"></i>Filtrar
+                </button>
+                <a href="@Url.Action("Index", "Partidas")" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-clockwise me-1"></i>Limpar
+                </a>
             </div>
         </div>
-    </div>
-}
+    }
 
-<!-- Tabelas por Rodada -->
-@foreach (var grupo in partidasAgrupadas)
-{
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header bg-info text-white">
-            <h5 class="mb-0">Rodada @grupo.Key</h5>
-        </div>
-        <div class="card-body p-0">
-            <table class="table table-hover mb-0">
-                <thead class="thead-light">
-                    <tr>
-                        <th>Mandante</th>
-                        <th>Visitante</th>
-                        <th>Data/Hora</th>
-                        <th>Gols Casa</th>
-                        <th>Gols Visitante</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in grupo)
-                    {
-                        var partida = item.Partida;
+    <!-- Tabelas por Rodada -->
+    @foreach (var grupo in partidasAgrupadas)
+    {
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Rodada @grupo.Key</h5>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover mb-0 align-middle">
+                    <thead class="table-light">
                         <tr>
-                            <td>@partida.TimeCasa.Nome</td>
-                            <td>@partida.TimeVisitante.Nome</td>
-                            <td>@partida.DataHora.ToString("dd/MM/yyyy HH:mm")</td>
-                            <td>@(partida.GolsCasa?.ToString() ?? "-")</td>
-                            <td>@(partida.GolsVisitante?.ToString() ?? "-")</td>
-                            <td>
-                                <div class="btn-group btn-group-sm" role="group">
-                                    @Html.ActionLink("Detalhes", "Details", new { id = partida.Id }, new { @class = "btn btn-outline-info" })
-                                    @Html.ActionLink("Editar", "Edit", new { id = partida.Id }, new { @class = "btn btn-outline-warning" })
-                                    @Html.ActionLink("Excluir", "Delete", new { id = partida.Id }, new { @class = "btn btn-outline-danger" })
-                                    @if ((partida.GolsCasa ?? 0) == 0 && (partida.GolsVisitante ?? 0) == 0)
-                                    {
-                                        @Html.ActionLink("Registrar", "RegistrarPlacar", new { id = partida.Id }, new { @class = "btn btn-outline-success" })
-                                    }
-                                    else
-                                    {
-                                        <button type="button" class="btn btn-success disabled">Registrado</button>
-                                    }
-                                </div>
-                            </td>
+                            <th>Mandante</th>
+                            <th>Visitante</th>
+                            <th>Data/Hora</th>
+                            <th>Gols Casa</th>
+                            <th>Gols Visitante</th>
+                            <th>Ações</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in grupo)
+                        {
+                            var partida = item.Partida;
+                            bool temPlacar = partida.GolsCasa.HasValue || partida.GolsVisitante.HasValue;
+                            <tr style="cursor:pointer;"
+                                onclick="window.location='@Url.Action("Details","Partidas",new { id = partida.Id })'">
+                                <td>@partida.TimeCasa.Nome</td>
+                                <td>@partida.TimeVisitante.Nome</td>
+                                <td>@partida.DataHora.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>@(partida.GolsCasa?.ToString() ?? "-")</td>
+                                <td>@(partida.GolsVisitante?.ToString() ?? "-")</td>
+                                <td>
+                                    <div class="btn-group btn-group-sm" role="group">
+                                        <a href="@Url.Action("Edit","Partidas",new { id = partida.Id })"
+                                           class="btn btn-outline-warning">
+                                            <i class="bi bi-pencil"></i>Editar
+                                        </a>
+                                        <a href="@Url.Action("Delete","Partidas",new { id = partida.Id })"
+                                           class="btn btn-outline-danger">
+                                            <i class="bi bi-trash"></i>Excluir
+                                        </a>
+                                        <a href="@Url.Action("RegistrarPlacar","Partidas",new { id = partida.Id })"
+                                           class="btn btn-outline-success">
+                                            <i class="bi bi-check2-circle"></i>@(temPlacar ? "Editar Placar" : "Registrar")
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
+    }
+
+    <div class="text-end mb-4">
+        @Html.ActionLink("Criar nova partida", "Create", null, new { @class = "btn btn-success" })
     </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.js"></script>
 }

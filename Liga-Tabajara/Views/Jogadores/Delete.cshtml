@@ -1,96 +1,63 @@
 ﻿@model Jogador
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Excluir Jogador";
 }
 
-<h2>Delete</h2>
+<div class="container mt-4">
+    <h2 class="mb-3 text-danger">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmação de Exclusão
+    </h2>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Jogador</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Time.Nome)
-        </dt>
+    <div class="alert alert-warning">
+        Tem certeza que deseja excluir o jogador <strong>@Model.Nome</strong>?
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Time.Nome)
-        </dd>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Time.Nome)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Time.Nome)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Nome)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Nome)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DataNascimento)</dt>
+                <dd class="col-sm-9">@Model.DataNascimento.ToString("dd/MM/yyyy")</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DataNascimento)
-        </dt>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Nacionalidade)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Nacionalidade)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.DataNascimento)
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Posicao)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Posicao)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Nacionalidade)
-        </dt>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.NumeroCamisa)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.NumeroCamisa)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Nacionalidade)
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Altura)</dt>
+                <dd class="col-sm-9">@Model.Altura.ToString("F2") m</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Posicao)
-        </dt>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Peso)</dt>
+                <dd class="col-sm-9">@Model.Peso.ToString("F1") kg</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Posicao)
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PePreferido)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.PePreferido)</dd>
+            </dl>
+        </div>
+    </div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.NumeroCamisa)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NumeroCamisa)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Altura)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Altura)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Peso)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Peso)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PePreferido)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PePreferido)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+        <div class="mt-4 d-flex justify-content-end">
+            <input type="submit" value="Excluir" class="btn btn-danger me-2" />
+            <a href="@Url.Action("Index", "Jogadores")" class="btn btn-secondary">
+                <i class="bi bi-arrow-left me-1"></i>Cancelar
+            </a>
         </div>
     }
 </div>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+}

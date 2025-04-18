@@ -245,6 +245,7 @@
 
             var flamengo = context.Times.FirstOrDefault(t => t.Nome == "Flamengo 2019");
             if (flamengo != null)
+
             {
                 var comissao = new List<ComissaoTecnica>
                 {

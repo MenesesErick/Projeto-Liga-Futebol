@@ -1,90 +1,55 @@
 ﻿@model Jogador
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalhes do Jogador";
 }
 
-<h2>Details</h2>
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="bi bi-person-lines-fill me-2"></i>Detalhes do Jogador</h2>
 
-<div>
-    <h4>Jogador</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Time.Nome)
-        </dt>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Time.Nome)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Time.Nome)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Time.Nome)
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Nome)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Nome)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.DataNascimento)</dt>
+                <dd class="col-sm-9">@Model.DataNascimento.ToString("dd/MM/yyyy")</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Nacionalidade)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Nacionalidade)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.DataNascimento)
-        </dt>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Posicao)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Posicao)</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.DataNascimento)
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.NumeroCamisa)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.NumeroCamisa)</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Nacionalidade)
-        </dt>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Altura)</dt>
+                <dd class="col-sm-9">@Model.Altura.ToString("F2") m</dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Nacionalidade)
-        </dd>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Peso)</dt>
+                <dd class="col-sm-9">@Model.Peso.ToString("F1") kg</dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Posicao)
-        </dt>
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PePreferido)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.PePreferido)</dd>
+            </dl>
+        </div>
+    </div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Posicao)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.NumeroCamisa)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.NumeroCamisa)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Altura)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Altura)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Peso)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Peso)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PePreferido)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PePreferido)
-        </dd>
-
-    </dl>
+    <div class="mt-4 d-flex justify-content-end">
+        <a href="@Url.Action("Edit", "Jogadores", new { id = Model.Id })" class="btn btn-outline-primary me-2">
+            <i class="bi bi-pencil me-1"></i>Editar
+        </a>
+        <a href="@Url.Action("Index", "Jogadores")" class="btn btn-secondary">
+            <i class="bi bi-arrow-left me-1"></i>Voltar
+        </a>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+@section Scripts {
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+}
