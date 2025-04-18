@@ -1,103 +1,90 @@
-﻿@model IEnumerable<Time>
+﻿@model IEnumerable<Liga_Tabajara.Controllers.HomeController.ClassificacaoEntry>
 
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Tabela de Classificação";
 }
 
-<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">Bem-vindo à Liga Tabajara!</h1>
-        <p class="lead">
-            Confira a tabela com os times participantes da nossa liga.
-        </p>
-    </section>
+<main class="container py-4">
 
-    <!-- Botão para gerar o calendário -->
-    <section class="row">
-        <div class="col-md-12">
-            @using (Html.BeginForm("Generate", "Calendar", FormMethod.Post))
-            {
-                <button type="submit" class="btn btn-primary">
-                    Gerar Calendário Automático
-                </button>
-            }
+    <div class="text-center mb-4">
+        <h1 class="display-4">Tabela de Pontos Corridos</h1>
+        <p class="lead">Classificação atual, em estilo “Brasileirão”.</p>
+    </div>
 
-            @if (TempData["Error"] != null)
-            {
-                <div class="alert alert-danger mt-2">@TempData["Error"]</div>
-            }
-            @if (TempData["Success"] != null)
-            {
-                <div class="alert alert-success mt-2">@TempData["Success"]</div>
-            }
+    <!-- Ações principais -->
+    <div class="d-flex flex-wrap justify-content-center gap-3 mb-4">
+        @using (Html.BeginForm("Generate", "Calendar", FormMethod.Post))
+        {
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-calendar-plus"></i> Gerar Calendário Automático
+            </button>
+        }
+        <a class="btn btn-success" href="@Url.Action("Index", "Calendar")">
+            <i class="bi bi-eye"></i> Ver Calendário
+        </a>
+    </div>
+
+    <!-- Alertas -->
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center">@TempData["Error"]</div>
+    }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center">@TempData["Success"]</div>
+    }
+
+    <!-- Tabela de Classificação -->
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <h3 class="mb-0">Classificação</h3>
         </div>
-    </section>
-
-    <a class="btn btn-success" href="@Url.Action("Index", "Calendar")">
-        Ver Calendário
-    </a>
-
-    <!-- Tabela de Times -->
-    <section class="row mt-4">
-        <div class="col-md-12">
-            <h2>Tabela de Times</h2>
-            <table class="table table-striped table-hover">
-                <thead>
+        <div class="card-body p-0">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-light">
                     <tr>
-                        <th>Nome</th>
-                        <th>Cidade</th>
-                        <th>Estado</th>
-                        <th>Ano Fundação</th>
-                        <th>Estádio</th>
-                        <th>Status</th>
+                        <th>Posição</th>
+                        <th>Time</th>
+                        <th>J</th>
+                        <th>V</th>
+                        <th>E</th>
+                        <th>D</th>
+                        <th>GP</th>
+                        <th>GC</th>
+                        <th>SG</th>
+                        <th>P</th>
                     </tr>
                 </thead>
                 <tbody>
                     @if (Model != null && Model.Any())
                     {
-                        foreach (var time in Model)
+                        var pos = 1;
+                        foreach (var c in Model)
                         {
                             <tr>
-                                <td>@time.Nome</td>
-                                <td>@time.Cidade</td>
-                                <td>@time.Estado</td>
-                                <td>@time.AnoFundacao</td>
-                                <td>@time.Estadio</td>
-                                <td>@(time.Status ? "Apto" : "Inapto")</td>
+                                <td>@pos</td>
+                                <td>@c.Nome</td>
+                                <td>@c.Jogos</td>
+                                <td>@c.Vitorias</td>
+                                <td>@c.Empates</td>
+                                <td>@c.Derrotas</td>
+                                <td>@c.GolsPro</td>
+                                <td>@c.GolsContra</td>
+                                <td>@c.SaldoGols</td>
+                                <td>@c.Pontos</td>
                             </tr>
+                            pos++;
                         }
                     }
                     else
                     {
                         <tr>
-                            <td colspan="6">Nenhum time encontrado.</td>
+                            <td colspan="10" class="text-center">Nenhuma partida registrada.</td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
-    </section>
-
-    <!-- Conteúdo Padrão do ASP.NET (opcional) -->
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC dá a você uma forma poderosa e baseada em padrões para
-                construir sites dinâmicos, permitindo uma separação de preocupações limpa e
-                proporcionando controle total sobre o markup para um desenvolvimento ágil.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet é uma extensão gratuita para o Visual Studio que facilita adicionar, remover e atualizar bibliotecas e ferramentas em projetos.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>Você pode facilmente encontrar uma empresa de hospedagem que ofereça a mistura certa de recursos e preço para suas aplicações.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
     </div>
+
 </main>

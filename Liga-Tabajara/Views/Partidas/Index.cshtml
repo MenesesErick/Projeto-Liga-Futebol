@@ -13,12 +13,12 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().TimeCasa.Nome)</th>
-            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().TimeVisitante.Nome)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().TimeCasa)</th>
+            <th>@Html.DisplayNameFor(model => model.FirstOrDefault().TimeVisitante)</th>
             <th>@Html.DisplayNameFor(model => model.FirstOrDefault().DataHora)</th>
             <th>@Html.DisplayNameFor(model => model.FirstOrDefault().GolsCasa)</th>
             <th>@Html.DisplayNameFor(model => model.FirstOrDefault().GolsVisitante)</th>
-            <th></th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
@@ -33,7 +33,16 @@
                 <td>
                     @Html.ActionLink("Detalhes", "Details", new { id = item.Id }) |
                     @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Excluir", "Delete", new { id = item.Id })
+                    @Html.ActionLink("Excluir", "Delete", new { id = item.Id }) |
+
+                    @if ((item.GolsCasa ?? 0) == 0 && (item.GolsVisitante ?? 0) == 0)
+                    {
+                        @Html.ActionLink("Registrar Placar", "RegistrarPlacar", new { id = item.Id })
+                    }
+                    else
+                    {
+                        <span style="color: green; font-weight: bold;">Placar registrado</span>
+                    }
                 </td>
             </tr>
         }

@@ -19,7 +19,6 @@ namespace Liga_Tabajara.Controllers
                 .Include(p => p.TimeVisitante)
                 .AsQueryable();
 
-            // Filtros: data e time
             if (data.HasValue)
             {
                 var dia = data.Value.Date;
@@ -44,7 +43,7 @@ namespace Liga_Tabajara.Controllers
             var partida = db.Partidas
                 .Include(p => p.TimeCasa)
                 .Include(p => p.TimeVisitante)
-                .Include(p => p.Gols)
+                .Include(p => p.Gols.Select(g => g.Jogador))
                 .FirstOrDefault(p => p.Id == id);
             if (partida == null)
                 return HttpNotFound();
@@ -129,7 +128,6 @@ namespace Liga_Tabajara.Controllers
             if (partida == null)
                 return HttpNotFound();
 
-            // Bloqueia exclusão se houver gols lançados
             bool temGols = db.Gols.Any(g => g.PartidaId == partida.Id);
             if (temGols)
                 ViewBag.Erro = "Não é possível excluir partida com gols registrados.";
@@ -155,6 +153,80 @@ namespace Liga_Tabajara.Controllers
             return RedirectToAction("Index");
         }
 
+        // GET: Partidas/RegistrarPlacar/5
+        public ActionResult RegistrarPlacar(int id)
+        {
+            var partida = db.Partidas
+                .Include(p => p.TimeCasa)
+                .Include(p => p.TimeVisitante)
+                .FirstOrDefault(p => p.Id == id);
+
+            if (partida == null)
+                return HttpNotFound();
+
+            ViewBag.JogadoresCasa = new SelectList(
+                db.Jogadores.Where(j => j.TimeId == partida.TimeCasaId).OrderBy(j => j.Nome),
+                "Id", "Nome"
+            );
+
+            ViewBag.JogadoresVisitante = new SelectList(
+                db.Jogadores.Where(j => j.TimeId == partida.TimeVisitanteId).OrderBy(j => j.Nome),
+                "Id", "Nome"
+            );
+
+            return View(partida);
+        }
+
+        // POST: Partidas/RegistrarPlacar/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RegistrarPlacar(int id, FormCollection form)
+        {
+            var partida = db.Partidas.Find(id);
+            if (partida == null) return HttpNotFound();
+
+            partida.GolsCasa = int.Parse(form["GolsCasa"] ?? "0");
+            partida.GolsVisitante = int.Parse(form["GolsVisitante"] ?? "0");
+
+            var antigos = db.Gols.Where(g => g.PartidaId == id);
+            db.Gols.RemoveRange(antigos);
+
+            for (int i = 1; i <= 5; i++)
+            {
+                var jv = form[$"Casa_Jogador_{i}"];
+                var mv = form[$"Casa_Minuto_{i}"];
+                if (!string.IsNullOrEmpty(jv) && !string.IsNullOrEmpty(mv))
+                {
+                    db.Gols.Add(new Gol
+                    {
+                        PartidaId = id,
+                        JogadorId = int.Parse(jv),
+                        Minuto = int.Parse(mv),
+                        Quantidade = 1
+                    });
+                }
+            }
+
+            for (int i = 1; i <= 5; i++)
+            {
+                var jv = form[$"Visitante_Jogador_{i}"];
+                var mv = form[$"Visitante_Minuto_{i}"];
+                if (!string.IsNullOrEmpty(jv) && !string.IsNullOrEmpty(mv))
+                {
+                    db.Gols.Add(new Gol
+                    {
+                        PartidaId = id,
+                        JogadorId = int.Parse(jv),
+                        Minuto = int.Parse(mv),
+                        Quantidade = 1
+                    });
+                }
+            }
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing) db.Dispose();
@@ -171,20 +243,15 @@ namespace Liga_Tabajara.Controllers
 
         private bool PartidaValida(Partida partida)
         {
-            // mandante != visitante
             if (partida.TimeCasaId == partida.TimeVisitanteId)
                 return false;
 
-            // conflito de data: cada team só uma partida por dia
             var data = DbFunctions.TruncateTime(partida.DataHora);
             bool conflito = db.Partidas.Any(p => p.Id != partida.Id
                 && DbFunctions.TruncateTime(p.DataHora) == data
                 && (p.TimeCasaId == partida.TimeCasaId || p.TimeVisitanteId == partida.TimeCasaId
                     || p.TimeCasaId == partida.TimeVisitanteId || p.TimeVisitanteId == partida.TimeVisitanteId));
-            if (conflito)
-                return false;
-
-            return true;
+            return !conflito;
         }
 
         #endregion

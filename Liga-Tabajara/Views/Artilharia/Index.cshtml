@@ -1,0 +1,29 @@
+﻿@model IEnumerable<Liga_Tabajara.Controllers.ArtilhariaController.ArtilheiroViewModel>
+
+<h2>Artilharia</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Posição</th>
+            <th>Nome</th>
+            <th>Camisa</th>
+            <th>Time</th>
+            <th>Gols</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int colocacao = 1;
+            foreach (var a in Model)
+            {
+                <tr>
+                    <td>@colocacao++</td>
+                    <td>@a.Nome</td>
+                    <td>@a.NumeroCamisa</td>
+                    <td>@a.TimeNome</td>
+                    <td>@a.TotalGols</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

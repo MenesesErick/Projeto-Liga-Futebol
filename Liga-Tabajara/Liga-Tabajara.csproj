@@ -237,6 +237,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ArtilhariaController.cs" />
     <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\ComissaoTecnicasController.cs" />
     <Compile Include="Controllers\GolsController.cs" />
@@ -367,6 +368,8 @@
     <Content Include="Views\Partidas\Edit.cshtml" />
     <Content Include="Views\Partidas\Index.cshtml" />
     <Content Include="Views\Calendar\Index.cshtml" />
+    <Content Include="Views\Partidas\RegistrarPlacar.cshtml" />
+    <Content Include="Views\Artilharia\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
