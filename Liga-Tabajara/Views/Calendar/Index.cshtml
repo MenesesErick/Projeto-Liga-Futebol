@@ -1,23 +1,41 @@
 ﻿@model List<Partida>
 
-<h2>Calendário de Jogos</h2>
+@{
+    ViewBag.Title = "Calendário de Jogos";
+    var partidasAgrupadas = Model
+        .OrderBy(p => p.DataHora)
+        .Select((partida, index) => new { partida, rodada = (index / 10) + 1 }) // 10 jogos por rodada
+        .GroupBy(x => x.rodada);
+}
 
-<table class="table table-bordered table-striped">
-    <thead>
-        <tr>
-            <th>Data</th>
-            <th>Mandante</th>
-            <th>Visitante</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var partida in Model)
-        {
-            <tr>
-                <td>@partida.DataHora.ToString("dd/MM/yyyy HH:mm")</td>
-                <td>@partida.TimeCasa.Nome</td>
-                <td>@partida.TimeVisitante.Nome</td>
-            </tr>
-        }
-    </tbody>
-</table>
+<h2 class="mb-4">Calendário de Jogos</h2>
+
+@foreach (var rodada in partidasAgrupadas)
+{
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Rodada @rodada.Key</h4>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-hover table-sm mb-0">
+                <thead class="thead-light">
+                    <tr>
+                        <th style="width: 20%;">Data</th>
+                        <th style="width: 40%;">Mandante</th>
+                        <th style="width: 40%;">Visitante</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in rodada)
+                    {
+                        <tr>
+                            <td>@item.partida.DataHora.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@item.partida.TimeCasa.Nome</td>
+                            <td>@item.partida.TimeVisitante.Nome</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

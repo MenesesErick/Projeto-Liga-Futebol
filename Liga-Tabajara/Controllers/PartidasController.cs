@@ -12,7 +12,7 @@ namespace Liga_Tabajara.Controllers
         private readonly LigaContext db = new LigaContext();
 
         // GET: Partidas
-        public ActionResult Index(DateTime? data, int? timeId)
+        public ActionResult Index(DateTime? data, int? timeId, string estadio, string jogo)
         {
             var partidas = db.Partidas
                 .Include(p => p.TimeCasa)
@@ -24,13 +24,27 @@ namespace Liga_Tabajara.Controllers
                 var dia = data.Value.Date;
                 partidas = partidas.Where(p => DbFunctions.TruncateTime(p.DataHora) == dia);
             }
+
             if (timeId.HasValue)
             {
                 partidas = partidas.Where(p => p.TimeCasaId == timeId.Value || p.TimeVisitanteId == timeId.Value);
             }
 
+            if (!string.IsNullOrEmpty(estadio))
+            {
+                partidas = partidas.Where(p => p.TimeCasa.Estadio.Contains(estadio));
+            }
+
+            if (!string.IsNullOrEmpty(jogo))
+            {
+                partidas = partidas.Where(p => (p.TimeCasa.Nome + " x " + p.TimeVisitante.Nome).Contains(jogo));
+            }
+
             ViewBag.DataFiltro = data?.ToString("yyyy-MM-dd");
             ViewBag.Times = new SelectList(db.Times, "Id", "Nome", timeId);
+            ViewBag.EstadioFiltro = estadio;
+            ViewBag.JogoFiltro = jogo;
+
             return View(partidas.ToList());
         }
 
@@ -160,19 +174,14 @@ namespace Liga_Tabajara.Controllers
                 .Include(p => p.TimeCasa)
                 .Include(p => p.TimeVisitante)
                 .FirstOrDefault(p => p.Id == id);
-
-            if (partida == null)
-                return HttpNotFound();
+            if (partida == null) return HttpNotFound();
 
             ViewBag.JogadoresCasa = new SelectList(
                 db.Jogadores.Where(j => j.TimeId == partida.TimeCasaId).OrderBy(j => j.Nome),
-                "Id", "Nome"
-            );
-
+                "Id", "Nome");
             ViewBag.JogadoresVisitante = new SelectList(
                 db.Jogadores.Where(j => j.TimeId == partida.TimeVisitanteId).OrderBy(j => j.Nome),
-                "Id", "Nome"
-            );
+                "Id", "Nome");
 
             return View(partida);
         }
@@ -185,43 +194,50 @@ namespace Liga_Tabajara.Controllers
             var partida = db.Partidas.Find(id);
             if (partida == null) return HttpNotFound();
 
-            partida.GolsCasa = int.Parse(form["GolsCasa"] ?? "0");
-            partida.GolsVisitante = int.Parse(form["GolsVisitante"] ?? "0");
+            // Remove gols antigos
+            db.Gols.RemoveRange(db.Gols.Where(g => g.PartidaId == id));
 
-            var antigos = db.Gols.Where(g => g.PartidaId == id);
-            db.Gols.RemoveRange(antigos);
-
-            for (int i = 1; i <= 5; i++)
+            // Registrar gols de casa
+            int golsCasa = 0;
+            var keysCasa = form.AllKeys.Where(k => k.StartsWith("Casa_Jogador_")).OrderBy(k => k);
+            foreach (var k in keysCasa)
             {
-                var jv = form[$"Casa_Jogador_{i}"];
-                var mv = form[$"Casa_Minuto_{i}"];
-                if (!string.IsNullOrEmpty(jv) && !string.IsNullOrEmpty(mv))
+                if (int.TryParse(form[k], out int jId) &&
+                    int.TryParse(form[k.Replace("Jogador", "Minuto")], out int m))
                 {
                     db.Gols.Add(new Gol
                     {
                         PartidaId = id,
-                        JogadorId = int.Parse(jv),
-                        Minuto = int.Parse(mv),
+                        JogadorId = jId,
+                        Minuto = m,
                         Quantidade = 1
                     });
+                    golsCasa++;
                 }
             }
 
-            for (int i = 1; i <= 5; i++)
+            // Registrar gols de visitante
+            int golsVisitante = 0;
+            var keysVisit = form.AllKeys.Where(k => k.StartsWith("Visitante_Jogador_")).OrderBy(k => k);
+            foreach (var k in keysVisit)
             {
-                var jv = form[$"Visitante_Jogador_{i}"];
-                var mv = form[$"Visitante_Minuto_{i}"];
-                if (!string.IsNullOrEmpty(jv) && !string.IsNullOrEmpty(mv))
+                if (int.TryParse(form[k], out int jId) &&
+                    int.TryParse(form[k.Replace("Jogador", "Minuto")], out int m))
                 {
                     db.Gols.Add(new Gol
                     {
                         PartidaId = id,
-                        JogadorId = int.Parse(jv),
-                        Minuto = int.Parse(mv),
+                        JogadorId = jId,
+                        Minuto = m,
                         Quantidade = 1
                     });
+                    golsVisitante++;
                 }
             }
+
+            // Atualiza totais
+            partida.GolsCasa = golsCasa;
+            partida.GolsVisitante = golsVisitante;
 
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -234,7 +250,6 @@ namespace Liga_Tabajara.Controllers
         }
 
         #region Métodos Privados
-
         private void CarregarViewBags(Partida partida = null)
         {
             ViewBag.TimeCasaId = new SelectList(db.Times, "Id", "Nome", partida?.TimeCasaId);
@@ -250,10 +265,9 @@ namespace Liga_Tabajara.Controllers
             bool conflito = db.Partidas.Any(p => p.Id != partida.Id
                 && DbFunctions.TruncateTime(p.DataHora) == data
                 && (p.TimeCasaId == partida.TimeCasaId || p.TimeVisitanteId == partida.TimeCasaId
-                    || p.TimeCasaId == partida.TimeVisitanteId || p.TimeVisitanteId == partida.TimeVisitanteId));
+                || p.TimeCasaId == partida.TimeVisitanteId || p.TimeVisitanteId == partida.TimeVisitanteId));
             return !conflito;
         }
-
         #endregion
     }
 }

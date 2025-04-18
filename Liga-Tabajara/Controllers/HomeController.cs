@@ -42,8 +42,11 @@ namespace Liga_Tabajara.Controllers
             }
             db.SaveChanges();
 
-            // --- 2) Carregar todas as partidas ---
-            var partidas = db.Partidas.ToList();
+            // --- 2) Carregar apenas partidas já disputadas ---
+            var partidas = db.Partidas
+                             .Where(p => p.GolsCasa.HasValue
+                                      && p.GolsVisitante.HasValue)
+                             .ToList();
 
             // --- 3) Montar a tabela de classificação ---
             var tabela = new List<ClassificacaoEntry>();
@@ -61,8 +64,11 @@ namespace Liga_Tabajara.Controllers
                 int derrotas = cmpCasa.Count(p => p.GolsCasa < p.GolsVisitante)
                               + cmpFora.Count(p => p.GolsVisitante < p.GolsCasa);
 
-                int golsPro = cmpCasa.Sum(p => p.GolsCasa ?? 0) + cmpFora.Sum(p => p.GolsVisitante ?? 0);
-                int golsContra = cmpCasa.Sum(p => p.GolsVisitante ?? 0) + cmpFora.Sum(p => p.GolsCasa ?? 0);
+                int golsPro = cmpCasa.Sum(p => p.GolsCasa.Value)
+                                + cmpFora.Sum(p => p.GolsVisitante.Value);
+                int golsContra = cmpCasa.Sum(p => p.GolsVisitante.Value)
+                                + cmpFora.Sum(p => p.GolsCasa.Value);
+
                 int saldo = golsPro - golsContra;
                 int pontos = (vitorias * 3) + (empates * 1);
 

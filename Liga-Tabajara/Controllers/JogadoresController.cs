@@ -13,26 +13,31 @@ namespace Liga_Tabajara.Controllers
         private readonly LigaContext db = new LigaContext();
 
         // GET: Jogadores
-        public ActionResult Index(string searchName, Posicao? posicao, PePreferido? pePreferido)
+        public ActionResult Index(string nome, Posicao? posicao, PePreferido? pePreferido)
         {
-            var jogadores = db.Jogadores.Include(j => j.Time).AsQueryable();
+            // 1) base query incluindo a relação com Time
+            var jogadores = db.Jogadores
+                              .Include(j => j.Time)
+                              .AsQueryable();
 
-            // Filtros
-            if (!string.IsNullOrWhiteSpace(searchName))
-                jogadores = jogadores.Where(j => j.Nome.Contains(searchName));
+            // 2) popula dropdowns
+            ViewBag.Posicoes = new SelectList(Enum.GetValues(typeof(Posicao)).Cast<Posicao>());
+            ViewBag.PesPreferidos = new SelectList(Enum.GetValues(typeof(PePreferido)).Cast<PePreferido>());
+
+            // 3) aplica filtros
+            if (!string.IsNullOrWhiteSpace(nome))
+                jogadores = jogadores.Where(j => j.Nome.Contains(nome));
+
             if (posicao.HasValue)
                 jogadores = jogadores.Where(j => j.Posicao == posicao.Value);
+
             if (pePreferido.HasValue)
                 jogadores = jogadores.Where(j => j.PePreferido == pePreferido.Value);
 
-            // Dropdowns para View
-            ViewBag.Posicoes = Enum.GetValues(typeof(Posicao))
-                                   .Cast<Posicao>()
-                                   .Select(p => new SelectListItem { Text = p.ToString(), Value = p.ToString(), Selected = (p == posicao) });
-            ViewBag.Pes = Enum.GetValues(typeof(PePreferido))
-                                .Cast<PePreferido>()
-                                .Select(p => new SelectListItem { Text = p.ToString(), Value = p.ToString(), Selected = (p == pePreferido) });
-            ViewBag.SearchName = searchName;
+            // 4) passa valores atuais para a view (para manter nos inputs)
+            ViewBag.FiltroNome = nome;
+            ViewBag.FiltroPosicao = posicao;
+            ViewBag.FiltroPePreferido = pePreferido;
 
             return View(jogadores.ToList());
         }

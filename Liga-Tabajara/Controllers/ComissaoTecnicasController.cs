@@ -15,10 +15,25 @@ namespace Liga_Tabajara.Controllers
         private LigaContext db = new LigaContext();
 
         // GET: ComissaoTecnicas
-        public ActionResult Index()
+        public ActionResult Index(string nome, Cargo? cargo)
         {
-            var comissaoTecnica = db.ComissaoTecnica.Include(c => c.Time);
-            return View(comissaoTecnica.ToList());
+            var comissao = db.ComissaoTecnica
+                             .Include(c => c.Time)
+                             .AsQueryable();
+
+            // dropdown de cargos fica vindo diretamente do enum
+            ViewBag.Cargos = new SelectList(Enum.GetValues(typeof(Cargo)));
+
+            if (!string.IsNullOrWhiteSpace(nome))
+                comissao = comissao.Where(c => c.Nome.Contains(nome));
+
+            if (cargo.HasValue)
+                comissao = comissao.Where(c => c.Cargo == cargo.Value);
+
+            ViewBag.FiltroNome = nome;
+            ViewBag.FiltroCargo = cargo;
+
+            return View(comissao.ToList());
         }
 
         // GET: ComissaoTecnicas/Details/5

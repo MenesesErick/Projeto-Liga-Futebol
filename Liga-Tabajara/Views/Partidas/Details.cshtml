@@ -1,58 +1,93 @@
 ﻿@model Partida
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalhes da Partida";
 }
 
-<h2>Details</h2>
+<h2 class="mb-4">Detalhes da Partida</h2>
 
-<div>
-    <h4>Partida</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.TimeCasa.Nome)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TimeCasa.Nome)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TimeVisitante.Nome)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TimeVisitante.Nome)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DataHora)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DataHora)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.GolsCasa)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.GolsCasa)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.GolsVisitante)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.GolsVisitante)
-        </dd>
-
-    </dl>
+<div class="card mb-4 shadow-sm">
+    <div class="card-body text-center">
+        <!-- Placar em destaque -->
+        <div class="d-flex justify-content-center align-items-center mb-3">
+            <h4 class="mb-0 mr-3">@Model.TimeCasa.Nome</h4>
+            <h1 class="mb-0 text-primary">@Model.GolsCasa</h1>
+            <h2 class="mx-2 mb-0">x</h2>
+            <h1 class="mb-0 text-danger">@Model.GolsVisitante</h1>
+            <h4 class="mb-0 ml-3">@Model.TimeVisitante.Nome</h4>
+        </div>
+        <p class="text-muted">@Model.DataHora.ToString("dd/MM/yyyy HH:mm")</p>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+<div class="row">
+    <div class="col-md-6">
+        <h4 class="mb-3">Gols – @Model.TimeCasa.Nome</h4>
+        <table class="table table-hover table-sm">
+            <thead class="thead-light">
+                <tr>
+                    <th>Minuto</th>
+                    <th>Jogador</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var golsCasa = Model.Gols
+                        .Where(g => g.Jogador.TimeId == Model.TimeCasaId)
+                        .OrderBy(g => g.Minuto);
+                    if (!golsCasa.Any())
+                    {
+                        <tr><td colspan="2" class="text-center">Nenhum gol registrado</td></tr>
+                    }
+                    else
+                    {
+                        foreach (var gol in golsCasa)
+                        {
+                            <tr>
+                                <td>@gol.Minuto&#39; </td>
+                                <td>@gol.Jogador.Nome</td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h4 class="mb-3">Gols – @Model.TimeVisitante.Nome</h4>
+        <table class="table table-hover table-sm">
+            <thead class="thead-light">
+                <tr>
+                    <th>Minuto</th>
+                    <th>Jogador</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{
+                    var golsVisit = Model.Gols
+                        .Where(g => g.Jogador.TimeId == Model.TimeVisitanteId)
+                        .OrderBy(g => g.Minuto);
+                    if (!golsVisit.Any())
+                    {
+                        <tr><td colspan="2" class="text-center">Nenhum gol registrado</td></tr>
+                    }
+                    else
+                    {
+                        foreach (var gol in golsVisit)
+                        {
+                            <tr>
+                                <td>@gol.Minuto&#39; </td>
+                                <td>@gol.Jogador.Nome</td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mt-4">
+    @Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-secondary" })
+    @Html.ActionLink("Editar", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary ml-2" })
+</div>
