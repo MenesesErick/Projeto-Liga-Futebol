@@ -18,11 +18,14 @@
             <span class="fw-bold">@nomeTimeVisitante</span>
         </h4>
     </div>
-
-    @using (Html.BeginForm("Edit", "Partida", FormMethod.Post))
+    @using (Html.BeginForm("Edit", "Partidas", FormMethod.Post))
     {
         @Html.AntiForgeryToken()
         @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.TimeCasaId)
+        @Html.HiddenFor(model => model.TimeVisitanteId)
+        @Html.HiddenFor(model => model.GolsCasa)
+        @Html.HiddenFor(model => model.GolsVisitante)
 
         <div class="card shadow-sm">
             <div class="card-body">
@@ -30,8 +33,10 @@
 
                 <div class="mb-3">
                     @Html.LabelFor(model => model.DataHora, new { @class = "form-label" })
-                    @Html.TextBoxFor(model => model.DataHora, "{0:yyyy-MM-ddTHH:mm}", new { @class = "form-control", type = "datetime-local" })
-                    @Html.ValidationMessageFor(model => model.DataHora, "", new { @class = "text-danger" })
+                    @Html.TextBoxFor(model => model.DataHora, "{0:yyyy-MM-ddTHH:mm}",
+                                    new { @class = "form-control", type = "datetime-local" })
+                    @Html.ValidationMessageFor(model => model.DataHora, "",
+                                               new { @class = "text-danger" })
                 </div>
 
                 <div class="d-flex justify-content-between">

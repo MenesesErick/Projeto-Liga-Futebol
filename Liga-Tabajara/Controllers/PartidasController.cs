@@ -126,7 +126,9 @@ namespace Liga_Tabajara.Controllers
             }
             if (!PartidaValida(partida))
             {
-                ModelState.AddModelError("", "Partida inválida...");
+                ModelState.AddModelError("",
+            "Partida inválida: ou o time mandante/visitante está duplicado, ou já existe um jogo desse time no dia selecionado.");
+
                 CarregarViewBags(partida);
                 return View(partida);
             }
@@ -269,14 +271,34 @@ namespace Liga_Tabajara.Controllers
 
         private bool PartidaValida(Partida partida)
         {
+            // 1) mandante e visitante distintos
             if (partida.TimeCasaId == partida.TimeVisitanteId)
                 return false;
 
-            var data = DbFunctions.TruncateTime(partida.DataHora);
-            return !db.Partidas.Any(p => p.Id != partida.Id &&
-                DbFunctions.TruncateTime(p.DataHora) == data &&
-                (p.TimeCasaId == partida.TimeCasaId || p.TimeVisitanteId == partida.TimeCasaId ||
-                 p.TimeCasaId == partida.TimeVisitanteId || p.TimeVisitanteId == partida.TimeVisitanteId));
+            var novaData = partida.DataHora.Date;
+
+            // 2) busca a data original (antes da edição)
+            var dataOriginal = db.Partidas
+                                 .AsNoTracking()
+                                 .Where(p => p.Id == partida.Id)
+                                 .Select(p => p.DataHora)
+                                 .FirstOrDefault()
+                                 .Date;
+
+            // 3) se não mudou o dia, manter válida:
+            if (dataOriginal == novaData)
+                return true;
+
+            // 4) senão, verificar se já existe outra partida desse time na novaData
+            bool conflito = db.Partidas.Any(p =>
+                p.Id != partida.Id &&
+                (p.TimeCasaId == partida.TimeCasaId ||
+                 p.TimeVisitanteId == partida.TimeCasaId ||
+                 p.TimeCasaId == partida.TimeVisitanteId ||
+                 p.TimeVisitanteId == partida.TimeVisitanteId) &&
+                DbFunctions.TruncateTime(p.DataHora) == novaData);
+
+            return !conflito;
         }
         #endregion
     }
