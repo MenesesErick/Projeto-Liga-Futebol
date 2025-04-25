@@ -36,6 +36,7 @@ public class Jogador
     [Display(Name = "Número da Camisa")]
     public int NumeroCamisa { get; set; }
 
+    [DisplayFormat(DataFormatString = "{0:0.00}", ApplyFormatInEditMode = true)]
     public decimal Altura { get; set; }
     public decimal Peso { get; set; }
 

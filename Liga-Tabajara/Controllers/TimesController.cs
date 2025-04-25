@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
@@ -21,7 +22,7 @@ namespace Liga_Tabajara.Controllers
                 .ToList();
 
             // informa na View se a liga está apta para iniciar
-            ViewBag.LigaApta = VerificarLigaApta(times);
+            ViewBag.LigaApta = VerificarLigaApta();
             return View(times);
         }
 
@@ -154,20 +155,17 @@ namespace Liga_Tabajara.Controllers
 
         private bool TimeApto(Time time)
         {
-            // carrega coleções para a validação
-            db.Entry(time).Collection(t => t.Jogadores).Load();
-            db.Entry(time).Collection(t => t.Comissao).Load();
+            int qtdJogadores = db.Jogadores
+                .Count(j => j.TimeId == time.Id);
 
-            // 1) mínimo de 30 jogadores
-            bool temJogadores = time.Jogadores.Count >= 30;
-
-            // 2) comissão com 5 cargos distintos
-            bool temComissao = time.Comissao
+            int qtdCargosDistintos = db.ComissaoTecnica
+                .Where(c => c.TimeId == time.Id)
                 .Select(c => c.Cargo)
                 .Distinct()
-                .Count() >= 5;
+                .Count();
 
-            // 3) campos obrigatórios (ModelState já checa [Required], mas aqui reforçamos)
+            bool temJogadores = qtdJogadores >= 30;
+            bool temComissao = qtdCargosDistintos >= 5;
             bool dadosOk = !string.IsNullOrWhiteSpace(time.Nome)
                        && !string.IsNullOrWhiteSpace(time.Cidade)
                        && !string.IsNullOrWhiteSpace(time.Estadio)
@@ -176,12 +174,15 @@ namespace Liga_Tabajara.Controllers
             return temJogadores && temComissao && dadosOk;
         }
 
-        private bool VerificarLigaApta(System.Collections.Generic.List<Time> todosOsTimes)
+        private bool VerificarLigaApta()
         {
-            // conta apenas os times aptos
-            int aptos = todosOsTimes.Count(t => TimeApto(t));
+            // busca todos os IDs de time e conta quantos estão aptos
+            var todosIds = db.Times.Select(t => t.Id).ToList();
+            int aptos = todosIds
+                .Count(id => TimeApto(new Time { Id = id }));
             return aptos == 20;
         }
+
 
         #endregion
     }

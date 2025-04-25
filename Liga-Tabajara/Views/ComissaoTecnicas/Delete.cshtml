@@ -22,8 +22,7 @@
                 <dd class="col-md-9">@Html.DisplayFor(model => model.Cargo)</dd>
 
                 <dt class="col-md-3">@Html.DisplayNameFor(model => model.DataNascimento)</dt>
-                <dd class="col-md-9">@Html.DisplayFor(model => model.DataNascimento.ToString("dd/MM/yyyy"))</dd>
-            </dl>
+                <dd class="col-md-9">@String.Format("{0:dd/MM/yyyy}", Model.DataNascimento)</dd>            </dl>
 
             <h3 class="text-danger">Tem certeza de que deseja excluir este item?</h3>
 
